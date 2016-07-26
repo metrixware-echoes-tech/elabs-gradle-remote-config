@@ -9,7 +9,6 @@ println "-----------------------------------------------------------------------
 println "-- $title Gradle Build Script"
 println "-----------------------------------------------------------------------------------"
 
-apply from: "$gradleConfigUrl/init.gradle"	// initialize global variables
 apply from: "$gradleConfigUrl/git.gradle" 	// populates $branch
 
 println "-- "
@@ -27,7 +26,7 @@ allprojects {
 	apply plugin: 'maven-publish'
 }
 
-
+apply from: "$gradleConfigUrl/init.gradle"	// initialize global variables
 apply from: "$gradleConfigUrl/java.gradle"
 apply from: "$gradleConfigUrl/create-dirs.gradle"
 apply from: "$gradleConfigUrl/groovy.gradle"
