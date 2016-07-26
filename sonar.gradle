@@ -11,4 +11,4 @@ sonarqube {
 task "sonarRunner" << {
 	println "-- WARNING: calling deprecated goal 'sonarRunner'. Please use 'sonarqube' instead."
 }
-sonarRunner.dependsOn 'sonarqube'
+//sonarRunner.dependsOn 'sonarqube'
