@@ -6,7 +6,7 @@ ext.htmlTempalteGitRepoUri = "https://github.com/echoes-tech/elabs-html-doc-temp
 ext.description = documentationTitle
 ext.copyright = "$rootProject.name-$version &#8208; &copy; $buildYear $author"
 ext.documentationSource = "src/main/doc"
-ext.docsDir = "$project.buildDir/docs"
+ext.docsDir = file("$project.buildDir/docs")
 
 buildscript {
   repositories {

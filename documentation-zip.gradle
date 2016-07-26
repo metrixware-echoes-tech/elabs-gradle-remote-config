@@ -6,7 +6,7 @@ allprojects {
 	task docDist(type: Zip) {
 		classifier = 'doc'
 		from(project.buildDir)
-		include('docs/**/*') // assumes docsDir = $buildDir/docs
+		include('docs/**/*') // assumes docsDir = fiule("$project.buildDir/docs")
 		entryCompression = ZipEntryCompression.DEFLATED
 	}
 	
