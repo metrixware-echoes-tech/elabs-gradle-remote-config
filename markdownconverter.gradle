@@ -64,10 +64,9 @@ allprojects {
 							.replaceAll('#CONTENT') { content }
 							.replaceAll('#LANG') { lang }
 							.replaceAll('#TITLE') { documentationTitle }
-							.replaceAll('#AUTHOR') { author }
-							.replaceAll('#DESCRIPTION') { description }
-							.replaceAll('#CONTACT') { contact }
-							.replaceAll('#COPYRIGHT') { copyright }
+							.replaceAll('#AUTHOR') { projectAuthor }
+							.replaceAll('#DESCRIPTION') { projectDescription }
+							.replaceAll('#FOOTER') { docFooter }
 							.replaceAll('#RELATIVE_PATH') { relativePathToParent }
 						
 						file.write(result, 'UTF-8')

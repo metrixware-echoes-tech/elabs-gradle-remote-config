@@ -8,9 +8,9 @@ ext {
 	
 	documentationTitle = "$title Documentation"
 	projectDescription = "$description"
-	copyright = "$rootProject.name-$version &#8208; &copy; $buildYear $author"
-	footer = "$copyright &#8208; <a href=\"$website\">$website</a> &#8208; <a href=\"mailto:$contact\">$contact</a>"
-	
+	projectAuthor = "$author"
+	docCopyright = "$title v$version &#8208; &copy; $buildYear $author"
+	docFooter = "$docCopyright &#8208; <a href=\"$website\">$website</a> &#8208; <a href=\"mailto:$contact\">$contact</a>"
 	docsSrcDir = "src/main/doc"
 	docsDir = file("$project.buildDir/docs")
 

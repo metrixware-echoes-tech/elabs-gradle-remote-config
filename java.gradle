@@ -45,8 +45,8 @@ allprojects {
 	javadoc {
 		project.configure(options) {
 			encoding = "ISO-8859-1"
-			author = author
-			footer = footer
+			author = projectAuthor
+			footer = docFooter
 		}
 	}
 }
