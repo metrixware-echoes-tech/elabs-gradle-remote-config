@@ -1,0 +1,55 @@
+
+
+ext.copyright = "$rootProject.name-$version &#8208; &copy; $year $author"
+
+allprojects {
+
+	apply plugin: "java"
+
+	/** CONFIGURATIONS */
+	configurations { provided }
+
+	sourceSets {
+		main {
+			compileClasspath += configurations.provided
+			runtimeClasspath += configurations.provided
+		}
+
+		test {
+			compileClasspath += configurations.provided
+			runtimeClasspath += configurations.provided
+		}
+	}
+
+	/** JAVA COMPILATION */
+	sourceCompatibility = 1.7
+	targetCompatibility = sourceCompatibility
+
+	compileJava {
+		//enable compilation in a separate daemon process
+		options.fork = true
+		//enable incremental compilation => nope
+		//options.incremental = true
+	}
+	jar { manifest.attributes provider: author }
+
+	//disable fail on javadoc linter warnings on java 8+
+	tasks.withType(Javadoc) {
+		if(JavaVersion.current() >= JavaVersion.VERSION_1_8){
+			options.addStringOption('Xdoclint:none', '-quiet')
+		}
+		
+	}
+
+	//disable incremental build : it's still an incubating feature !
+	//tasks.withType(JavaCompile) { options.incremental = true }
+
+	// note : javadoc aggregation (in root project) is configured in the javadoc-aggregate.groovy file
+	javadoc {
+		project.configure(options) {
+			encoding = "ISO-8859-1"
+			author = author
+			footer = copyright
+		}
+	}
+}

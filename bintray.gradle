@@ -1,0 +1,114 @@
+/*
+ * Copyright 2012-2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+ext.descriptionKomea = 'Komea is a framework to collect, aggregate events from your software factory and build metrics and many other things ';
+
+Date buildTimeAndDate = new Date()
+ext {
+    buildDate = buildTimeAndDate.format('yyyy-MM-dd')
+    buildTime = buildTimeAndDate.format('HH:mm:ss.SSSZ')
+}
+
+allprojects {
+
+	apply plugin: 'com.jfrog.bintray'
+
+	jar {
+		manifest {
+			attributes(
+				'Built-By': System.properties['user.name'],
+				'Created-By': System.properties['java.version'] + " (" + System.properties['java.vendor'] + " " + System.getProperty("java.vm.version") + ")",
+				'Build-Date': project.buildDate,
+				'Build-Time': project.buildTime,
+				'Specification-Title': project.name,
+				'Specification-Version': project.version,
+				'Specification-Vendor': author,
+				'Implementation-Title': project.name,
+				'Implementation-Version': project.version,
+				'Implementation-Vendor': author
+			)
+		}
+	}
+
+	def pomConfig = {
+		name project.name
+		description descriptionKomea
+		url 'https://github.com/sleroy/komea'
+		inceptionYear year
+		licenses {
+			license {
+				name 'LGPL'
+				url 'https://www.gnu.org/licenses/lgpl.html'
+				distribution 'repo'
+			}
+		}
+		scm {
+			url 'https://github.com/sleroy/komea'
+		}
+		developers {
+			[
+				sleroy: 'Sylvain Leroy'
+			].each { devId, devName ->
+				developer {
+					id devId
+					name devName
+					roles {
+						role 'Developer'
+					}
+				}
+			}
+		}
+	}
+
+	task sourceJar(type: Jar) {
+		group 'Build'
+		description 'An archive of the source code'
+		classifier 'sources'
+		from sourceSets.main.allSource
+	}
+
+	artifacts { sourceJar }
+
+	publishing {
+		publications {
+			mavenCustom(MavenPublication) {
+				from components.java
+				artifact sourceJar
+
+				pom.withXml {
+					asNode().children().last() + pomConfig
+				}
+			}
+		}
+	}
+
+	if (!project.hasProperty('bintrayUsername')) ext.bintrayUsername = ''
+	if (!project.hasProperty('bintrayApiKey')) ext.bintrayApiKey = ''
+
+	bintray {
+		user = project.bintrayUsername
+		key = project.bintrayApiKey
+		publications = ['mavenCustom']
+		pkg {
+			repo = 'maven'
+			userOrg = 'sleroy'
+			name = 'komea'
+			desc = descriptionKomea
+			licenses = ['LGPL']
+			labels = ['komea', 'factory', 'software', 'metric', 'quality', 'industrialization']
+		}
+	}
+}

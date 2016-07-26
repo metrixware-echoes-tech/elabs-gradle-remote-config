@@ -1,0 +1,11 @@
+
+ext.GroovyLibrary = "org.codehaus.groovy:groovy-all:${GROOVY_VERSION}"
+
+subprojects {
+
+	apply plugin: 'groovy'
+	
+    sourceSets.main.groovy {
+        srcDirs = [ 'src/main/groovy' ]
+    } 
+}

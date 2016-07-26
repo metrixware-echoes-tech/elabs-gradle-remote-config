@@ -1,0 +1,64 @@
+/**
+ * Nexus Rule Management
+ *
+ */
+
+ext.nexusURL = "http://zeus.tocea.local:8081"
+
+if (project.hasProperty('remote')) {
+	ext.nexusURL = "http://labs.echoes.fr:90"
+	println ("-- INFO : Utilisation de Nexus en remote $nexusURL")
+} else {
+	println ("-- INFO : Utilisation de Nexus en local (Echoes/Lab) $nexusURL")
+}
+
+gradle.allprojects {
+
+	ext.isRelease = (! (project.version.endsWith('-SNAPSHOT')))
+
+	/** REPOSITORIES */
+	repositories {
+
+		mavenLocal()
+		if (project.hasProperty('remote')) {
+			mavenCentral()
+			jcenter()
+		}
+
+		maven {
+			credentials {
+				username mavenUser
+				password mavenPassword
+			}
+			// Snapshots EchoesLabs
+			url nexusURL + "/nexus/content/groups/echoes-lab-snapshot"
+		}
+		
+		maven {
+			credentials {
+				username mavenUser
+				password mavenPassword
+			}
+			// Release EchoesLabs (local)
+			url nexusURL + "/nexus/content/groups/echoes-lab-release"
+		}
+
+		/* maven { url "http://dl.bintray.com/sleroy/maven" } */
+	}
+
+	/** UPLOAD ARCHIVES */
+	uploadArchives {
+		def publishURL = nexusURL+"/nexus/content/repositories/RAPID"
+		if (!isRelease) {
+			publishURL += "-snapshots"
+		}
+		
+		repositories {
+			mavenDeployer {
+				repository(url: publishURL) {
+					authentication(userName: mavenUser, password: mavenPassword)
+				}
+			}
+		}
+	}
+}

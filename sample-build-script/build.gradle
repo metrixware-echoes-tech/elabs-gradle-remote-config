@@ -1,0 +1,52 @@
+
+plugins {
+  id "org.sonarqube" version "2.0.1"
+  id "org.kordamp.markdown.convert" version "1.1.0"
+}
+
+println ""
+println "-----------------------------------------------------------------------------------"
+println "-- Gradle Sample Project Gradle Build Script"
+println "-----------------------------------------------------------------------------------"
+
+// populates $branch
+apply from: "$rootProject.projectDir/config/git.groovy"
+
+println "-- "
+println "-- Building version '$version'"
+println "-- with " + GradleVersion.current().toString()
+println "-- on Java Virtual Machine " + org.gradle.internal.jvm.Jvm.current()
+println "--"
+println "-- HINT : To print unit tests logs uses -PlogTest"
+println "-- HINT : To compile outside Echoes/Lab building, use -Premote"
+
+allprojects {
+
+	apply plugin: "maven"
+	apply plugin: "idea"
+	apply plugin: "project-report"
+	apply plugin: 'maven-publish'
+}
+
+apply from: "$rootProject.projectDir/config/java.groovy"
+apply from: "$rootProject.projectDir/config/create-dirs.groovy"
+apply from: "$rootProject.projectDir/config/groovy.groovy"
+apply from: "$rootProject.projectDir/config/eclipse.groovy"
+apply from: "$rootProject.projectDir/config/sonar.groovy"
+apply from: "$rootProject.projectDir/config/nexus.groovy"
+apply from: "$rootProject.projectDir/config/deppkg.groovy"
+apply from: "$rootProject.projectDir/config/defaultdeps.groovy"
+apply from: "$rootProject.projectDir/config/test.groovy"
+apply from: "$rootProject.projectDir/config/findbugs.groovy"
+apply from: "$rootProject.projectDir/config/jacoco.groovy"
+apply from: "$rootProject.projectDir/config/markdownconverter.groovy"
+apply from: "$rootProject.projectDir/config/javadoc-aggregate.groovy"
+apply from: "$rootProject.projectDir/config/documentation-zip.groovy"
+
+task wrapper(type: Wrapper) { gradleVersion = GRADLE_VERSION }
+
+println "--"
+println "-----------------------------------------------------------------------------------"
+println "-- Configuration done."
+println "-----------------------------------------------------------------------------------"
+println ""

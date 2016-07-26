@@ -1,0 +1,39 @@
+
+allprojects {
+
+	// define a zip file containing all the generated documentation
+	// expected name archive path is : $projectRootDir/build/distribution/$project.name-$project.version-doc.zip
+	task docDist(type: Zip) {
+		classifier = 'doc'
+		from(project.buildDir)
+		include('docs/**/*')
+		entryCompression = ZipEntryCompression.DEFLATED
+	}
+	
+	// make sure the documentation archive is built when build task is called
+	build.dependsOn docDist	
+	
+	// only add the artifact if the docDist task has executed, that is, if there is at least 1 file to zip.
+	// if no file is there to zip, the docDist task is skipped, and no artifact is added.
+	docDist.doLast {
+		artifacts {
+			archives docDist
+		}
+	}
+}
+
+// try to build markdown doc for all projects
+allprojects {
+	try { docDist.dependsOn tasks.getByName('markdownToHtml') } catch (Exception e) { logger.info "could not add dep to markdownToHtml" }
+}
+
+// try to build javadoc/groovydoc for sub projects only
+subprojects {
+	// try generation the documentation first
+	try { docDist.dependsOn tasks.getByName('javadoc') } catch (Exception e) { logger.info "could not add dep to javadoc" }
+	try { docDist.dependsOn tasks.getByName('groovydoc') } catch (Exception e) { logger.info "could not add dep to groovydoc" }
+}
+
+//try to build aggregated javadoc for root project only
+try { docDist.dependsOn tasks.getByName('alljavadoc') } catch (Exception e) { logger.info "could not add dep to alljavadoc" }
+try { docDist.dependsOn tasks.getByName('allgroovydoc') } catch (Exception e) { logger.info "could not add dep to allgroovydoc" }

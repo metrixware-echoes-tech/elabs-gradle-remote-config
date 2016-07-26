@@ -1,0 +1,87 @@
+
+
+ext.htmlTemplateCacheDir = "$rootProject.rootDir/.htmlTemplateCache/"
+ext.htmlTempalteGitRepoUri = "https://github.com/echoes-tech/elabs-html-doc-template.git"
+
+ext.description = documentationTitle
+ext.year = new Date().format('yyyy')
+ext.copyright = "$rootProject.name-$version &#8208; &copy; $year $author"
+
+buildscript {
+  repositories {
+	jcenter()
+  }
+
+  dependencies {
+	classpath 'com.palominolabs.gradle.task:gradle-git-clone-task:0.0.2'
+  }
+}
+	
+allprojects {
+
+	task cloneHtmlTemplateGitRepo(type: com.palominolabs.gradle.task.git.clone.GitCloneTask) {
+	  dir = file(htmlTemplateCacheDir)
+	  uri = htmlTempalteGitRepoUri
+	  treeish = 'origin/master'
+	}
+	if (! new File(htmlTemplateCacheDir).exists()) {
+		markdownToHtml.dependsOn cloneHtmlTemplateGitRepo
+	}
+
+	apply plugin: 'org.kordamp.markdown.convert'
+
+	def markdownDocFolderPath = "$project.projectDir/src/main/doc"
+
+	def markdownDocFolder = new File(markdownDocFolderPath)
+	def htmlOutputDocFolder = file("$project.buildDir/docs")
+
+	if (! markdownDocFolder.exists()) {
+		markdownDocFolder.mkdirs()
+	}
+	
+	markdownToHtml.sourceDir = markdownDocFolder
+	markdownToHtml.outputDir = htmlOutputDocFolder
+	markdownToHtml.configuration = [tables: true]
+	
+	// markdownToHtml does not generate proper header/headers neither styles.
+	// use html templates from template cache (populated with git task above)
+	markdownToHtml.doLast {
+		copy {
+			from file(htmlTemplateCacheDir)
+			into docsDir
+		}
+		def templateFile = new File(docsDir.path+"/template.html")
+		if (templateFile.exists()) {
+			def template = templateFile.getText("UTF-8")
+			FileTree tree = fileTree(dir: "$docsDir", include: '**/*.html', exclude: ['/javadoc', '/groovydoc', '/template.html'])
+			tree.each { File file ->
+				if (file.name.endsWith(".html") && !templateFile.name.equals(file.name)) {
+					logger.info "-- processing markdown documentation file "+file.name+"..."
+					def content = file.getText("UTF-8")
+					
+					// compute the relative path to the root directory
+					def relativePathToParent = file.getParentFile().toPath().relativize( docsDir.toPath() ).toFile().toString()
+					if (! relativePathToParent.isEmpty()) { relativePathToParent += "/" }
+					
+					def result = template
+						.replaceAll('#CONTENT') { content }
+						.replaceAll('#LANG') { lang }
+						.replaceAll('#TITLE') { documentationTitle }
+						.replaceAll('#AUTHOR') { author }
+						.replaceAll('#DESCRIPTION') { description }
+						.replaceAll('#CONTACT') { contact }
+						.replaceAll('#COPYRIGHT') { copyright }
+						.replaceAll('#RELATIVE_PATH') { relativePathToParent }
+					
+					file.write(result, 'UTF-8')
+				}
+			}
+			//remove unecessary files copied from the html template repo
+			templateFile.delete()
+			new File(docsDir.path+"/README.md").delete()
+			new File(docsDir.path+"/LICENSE").delete()
+		}
+	}
+	
+	build.dependsOn 'markdownToHtml'
+}
