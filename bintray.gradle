@@ -39,7 +39,7 @@ allprojects {
 		name project.name
 		description projectDescription
 		url 'https://github.com/sleroy/komea'
-		inceptionYear year
+		inceptionYear buildYear
 		licenses {
 			license {
 				name 'LGPL'
