@@ -4,7 +4,5 @@ subprojects {
 
 	configurations { provided }
 
-	eclipse.classpath.plusConfigurations += configurations.provided
-	
 }
 
