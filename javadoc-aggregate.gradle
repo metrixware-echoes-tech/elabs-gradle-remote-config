@@ -1,5 +1,7 @@
 
 ext.copyright = "$rootProject.name-$version &#8208; &copy; $year $author"
+ext.footer = copyright
+ext.docsDir = "$buildDir/docs"
 
 // list all the subprojects
 def projectList = new ArrayList()
@@ -14,12 +16,12 @@ task alljavadoc(type: Javadoc) {
 	project.configure(options) {
 		encoding = "ISO-8859-1"
 		author = author
-		footer = copyright
+		footer = footer
 	}
 	
     source projectList.collect { project(it).sourceSets.main.allJava }
     classpath = files(projectList.collect { project(it).sourceSets.main.compileClasspath })
-    destinationDir = file("${buildDir}/docs/javadoc")
+    destinationDir = file("$docsDir/javadoc")
 }
 
 // define a task for aggregating the groovydoc of all subprojects in the root project groovydoc
@@ -27,5 +29,5 @@ task allgroovydoc(type: Groovydoc) {
     source projectList.collect { project(it).sourceSets.main.allGroovy }
     classpath = files(projectList.collect { project(it).sourceSets.main.compileClasspath })
     groovyClasspath = files(projectList.collect { project(it).sourceSets.main.compileClasspath })
-    destinationDir = file("${buildDir}/docs/groovydoc")
+    destinationDir = file("$docsDir/groovydoc")
 }

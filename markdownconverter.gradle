@@ -6,6 +6,8 @@ ext.htmlTempalteGitRepoUri = "https://github.com/echoes-tech/elabs-html-doc-temp
 ext.description = documentationTitle
 ext.year = new Date().format('yyyy')
 ext.copyright = "$rootProject.name-$version &#8208; &copy; $year $author"
+ext.documentationSource = "src/main/doc"
+ext.docsDir = "$project.buildDir/docs"
 
 buildscript {
   repositories {
@@ -30,10 +32,10 @@ allprojects {
 
 	apply plugin: 'org.kordamp.markdown.convert'
 
-	def markdownDocFolderPath = "$project.projectDir/src/main/doc"
+	def markdownDocFolderPath = "$project.projectDir/$documentationSource"
 
 	def markdownDocFolder = new File(markdownDocFolderPath)
-	def htmlOutputDocFolder = file("$project.buildDir/docs")
+	def htmlOutputDocFolder = file(docsDir)
 
 	if (! markdownDocFolder.exists()) {
 		markdownDocFolder.mkdirs()
@@ -83,5 +85,5 @@ allprojects {
 		}
 	}
 	
-	build.dependsOn 'markdownToHtml'
+	build.dependsOn markdownToHtml
 }

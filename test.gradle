@@ -1,4 +1,9 @@
 
+
+ext.testMinHeapSize = "256m"
+ext.testMaxHeapSize = "1024m"
+ext.testMaxPermSize = "256m"
+
 subprojects {
 
 	task unitTest(type : Test) { exclude "**/**IT" }
@@ -27,20 +32,20 @@ subprojects {
 		}
 
 		// set heap size for the test JVM(s)
-		minHeapSize = "256m"
-		maxHeapSize = "1024m"
+		minHeapSize = testMinHeapSize
+		maxHeapSize = testMaxHeapSize
 
 		// set JVM arguments for the test JVM(s)
 		// disabled for java 8+ and this option is disabled
 		if(JavaVersion.current() < JavaVersion.VERSION_1_8){
-			jvmArgs '-XX:MaxPermSize=256m'
+			jvmArgs "-XX:MaxPermSize="+testMaxPermSize
 		}
 	}
 
 	configurations.all {
 		resolutionStrategy {
-			//force    'org.objenesis:objenesis:1.3'
-			force JUNIT 
+			//force    'org.objenesis:objenesis:$TEST_OBJENESIS'
+			force "junit:junit:${TEST_JUNIT}"
 		}
 	}
 }

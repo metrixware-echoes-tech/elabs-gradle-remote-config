@@ -1,15 +1,15 @@
-/**
- * Nexus Rule Management
- *
- */
 
-ext.nexusURL = "http://zeus.tocea.local:8081"
+ext.nexusSnapshotPath = "/nexus/content/groups/echoes-lab-snapshot"
+ext.nexusReleasePath  = "/nexus/content/groups/echoes-lab-release"
+ext.nexusUploadPath   = "/nexus/content/repositories/RAPID"
+
+ext.nexusURL = localNexusURL
 
 if (project.hasProperty('remote')) {
-	ext.nexusURL = "http://labs.echoes.fr:90"
+	ext.nexusURL = remoteNexusURL
 	println ("-- INFO : Utilisation de Nexus en remote $nexusURL")
 } else {
-	println ("-- INFO : Utilisation de Nexus en local (Echoes/Lab) $nexusURL")
+	println ("-- INFO : Utilisation de Nexus en local $nexusURL")
 }
 
 gradle.allprojects {
@@ -31,7 +31,7 @@ gradle.allprojects {
 				password mavenPassword
 			}
 			// Snapshots EchoesLabs
-			url nexusURL + "/nexus/content/groups/echoes-lab-snapshot"
+			url nexusURL + nexusSnapshotPath
 		}
 		
 		maven {
@@ -40,7 +40,7 @@ gradle.allprojects {
 				password mavenPassword
 			}
 			// Release EchoesLabs (local)
-			url nexusURL + "/nexus/content/groups/echoes-lab-release"
+			url nexusURL + nexusReleasePath
 		}
 
 		/* maven { url "http://dl.bintray.com/sleroy/maven" } */
@@ -48,7 +48,7 @@ gradle.allprojects {
 
 	/** UPLOAD ARCHIVES */
 	uploadArchives {
-		def publishURL = nexusURL+"/nexus/content/repositories/RAPID"
+		def publishURL = nexusURL + nexusUploadPath
 		if (!isRelease) {
 			publishURL += "-snapshots"
 		}

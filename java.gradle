@@ -1,7 +1,9 @@
 
 
 ext.copyright = "$rootProject.name-$version &#8208; &copy; $year $author"
-
+ext.footer = copyright
+ext.javaSourceCompatibility = 1.7
+ext.javaTargetCompatibility = 1.7
 allprojects {
 
 	apply plugin: "java"
@@ -22,8 +24,8 @@ allprojects {
 	}
 
 	/** JAVA COMPILATION */
-	sourceCompatibility = 1.7
-	targetCompatibility = sourceCompatibility
+	sourceCompatibility = javaSourceCompatibility
+	targetCompatibility = javaTargetCompatibility
 
 	compileJava {
 		//enable compilation in a separate daemon process
@@ -49,7 +51,7 @@ allprojects {
 		project.configure(options) {
 			encoding = "ISO-8859-1"
 			author = author
-			footer = copyright
+			footer = footer
 		}
 	}
 }

@@ -1,12 +1,8 @@
 subprojects {
 	//TEST FRAMEWORKS DEPENDENCIES
 
-	ext.JUNIT= "junit:junit:${TEST_JUNIT}"
-
-	ext.LOGGING = "ch.qos.logback:logback-classic:$LOG_LOGBACK"
-
 	ext.tests_frameworks = [
-		JUNIT,
+		"junit:junit:${TEST_JUNIT}",
 		"org.mockito:mockito-core:${TEST_MOCKITO}",
 		"org.powermock:powermock-mockito-release-full:${TEST_POWERMOCK}",
 		"org.powermock:powermock-module-junit4-rule:${TEST_POWERMOCK}",

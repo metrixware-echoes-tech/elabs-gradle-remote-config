@@ -12,12 +12,7 @@ subprojects {
 		compile "com.google.code.findbugs:jsr305:$FINDBUGS"
 		compile "com.google.guava:guava:$GUAVA"
 
-
-		testCompile LOGGING
-
 		testCompile tests_frameworks // TEST FRAMEWORKS
-
-		testCompile("org.easymock:easymock:${TEST_EASYMOCK}") { exclude group: 'org.objenesis' }
 		testRuntime "org.apache.logging.log4j:log4j-core:${LOG4J}"
 
 		testCompile("org.spockframework:spock-core:$TEST_SPOCK") { exclude group: 'junit' }
@@ -31,7 +26,7 @@ subprojects {
 
 		testCompile "com.lordofthejars:nosqlunit-mongodb:$TEST_NOSQLUNIT"
 
-		testCompile LOGGING
+		testCompile "ch.qos.logback:logback-classic:$LOG_LOGBACK"
 
 		testCompile tests_frameworks // TEST FRAMEWORKS
 

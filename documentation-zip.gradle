@@ -6,7 +6,7 @@ allprojects {
 	task docDist(type: Zip) {
 		classifier = 'doc'
 		from(project.buildDir)
-		include('docs/**/*')
+		include('docs/**/*') // assumes docsDir = $buildDir/docs
 		entryCompression = ZipEntryCompression.DEFLATED
 	}
 	
@@ -21,6 +21,8 @@ allprojects {
 		}
 	}
 }
+
+//TODO : find a better way to add optional dependencies
 
 // try to build markdown doc for all projects
 allprojects {

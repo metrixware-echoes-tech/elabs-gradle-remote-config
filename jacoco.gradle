@@ -4,7 +4,7 @@ subprojects {
 	apply plugin: 'jacoco'
 
 	/** TESTS */
-	jacoco { toolVersion = '0.7.1.201405082137' }
+	jacoco { toolVersion = "$TEST_JACOCO" }
 
 	jacocoTestReport {
 		reports {

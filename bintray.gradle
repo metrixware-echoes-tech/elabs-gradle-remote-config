@@ -14,14 +14,6 @@
  * limitations under the License.
  */
 
-ext.descriptionKomea = 'Komea is a framework to collect, aggregate events from your software factory and build metrics and many other things ';
-
-Date buildTimeAndDate = new Date()
-ext {
-    buildDate = buildTimeAndDate.format('yyyy-MM-dd')
-    buildTime = buildTimeAndDate.format('HH:mm:ss.SSSZ')
-}
-
 allprojects {
 
 	apply plugin: 'com.jfrog.bintray'
@@ -45,7 +37,7 @@ allprojects {
 
 	def pomConfig = {
 		name project.name
-		description descriptionKomea
+		description projectDescription
 		url 'https://github.com/sleroy/komea'
 		inceptionYear year
 		licenses {
@@ -106,7 +98,7 @@ allprojects {
 			repo = 'maven'
 			userOrg = 'sleroy'
 			name = 'komea'
-			desc = descriptionKomea
+			desc = projectDescription
 			licenses = ['LGPL']
 			labels = ['komea', 'factory', 'software', 'metric', 'quality', 'industrialization']
 		}
