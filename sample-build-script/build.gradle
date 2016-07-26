@@ -18,7 +18,7 @@ println "-- with " + GradleVersion.current().toString()
 println "-- on Java Virtual Machine " + org.gradle.internal.jvm.Jvm.current()
 println "--"
 println "-- HINT : To print unit tests logs uses -PlogTest"
-println "-- HINT : To compile outside Echoes/Lab building, use -Premote"
+println "-- HINT : To compile outside company building, use -Premote"
 
 allprojects {
 	apply plugin: "maven"
