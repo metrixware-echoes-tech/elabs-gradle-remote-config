@@ -46,6 +46,5 @@ ext.getGitBranch = {
 /**
  * Version rule management.
  */
-//logger.info "version $version"
-project.version = getGitBranch() ? version : (version + '.' + getGitBranch())
 ext.branch = getGitBranch()
+project.version = branch.isEmpty() ? version : (version + '.' + branch)
