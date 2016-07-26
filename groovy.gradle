@@ -6,4 +6,8 @@ subprojects {
     sourceSets.main.groovy {
         srcDirs = [ 'src/main/groovy' ]
     } 
+   
+	groovydoc {
+		footer = docFooter
+	}
 }

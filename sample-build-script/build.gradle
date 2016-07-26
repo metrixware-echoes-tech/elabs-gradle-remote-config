@@ -38,8 +38,9 @@ apply from: "$gradleConfigUrl/defaultdeps.gradle"
 apply from: "$gradleConfigUrl/test.gradle"
 apply from: "$gradleConfigUrl/findbugs.gradle"
 apply from: "$gradleConfigUrl/jacoco.gradle"
-apply from: "$gradleConfigUrl/markdownconverter.gradle"
 apply from: "$gradleConfigUrl/javadoc-aggregate.gradle"
+apply from: "$gradleConfigUrl/groovydoc-aggregate.gradle"
+apply from: "$gradleConfigUrl/markdownconverter.gradle"
 apply from: "$gradleConfigUrl/documentation-zip.gradle"
 
 task wrapper(type: Wrapper) { gradleVersion = GRADLE_VERSION }
