@@ -6,11 +6,11 @@ plugins {
 
 println ""
 println "-----------------------------------------------------------------------------------"
-println "-- Gradle Sample Project Gradle Build Script"
+println "-- $title Gradle Build Script"
 println "-----------------------------------------------------------------------------------"
 
-// populates $branch
-apply from: "$rootProject.projectDir/config/git.groovy"
+apply from: "$gradleConfigUrl/init.gradle"	// initialize global variables
+apply from: "$gradleConfigUrl/git.gradle" 	// populates $branch
 
 println "-- "
 println "-- Building version '$version'"
@@ -21,27 +21,27 @@ println "-- HINT : To print unit tests logs uses -PlogTest"
 println "-- HINT : To compile outside Echoes/Lab building, use -Premote"
 
 allprojects {
-
 	apply plugin: "maven"
 	apply plugin: "idea"
 	apply plugin: "project-report"
 	apply plugin: 'maven-publish'
 }
 
-apply from: "$rootProject.projectDir/config/java.groovy"
-apply from: "$rootProject.projectDir/config/create-dirs.groovy"
-apply from: "$rootProject.projectDir/config/groovy.groovy"
-apply from: "$rootProject.projectDir/config/eclipse.groovy"
-apply from: "$rootProject.projectDir/config/sonar.groovy"
-apply from: "$rootProject.projectDir/config/nexus.groovy"
-apply from: "$rootProject.projectDir/config/deppkg.groovy"
-apply from: "$rootProject.projectDir/config/defaultdeps.groovy"
-apply from: "$rootProject.projectDir/config/test.groovy"
-apply from: "$rootProject.projectDir/config/findbugs.groovy"
-apply from: "$rootProject.projectDir/config/jacoco.groovy"
-apply from: "$rootProject.projectDir/config/markdownconverter.groovy"
-apply from: "$rootProject.projectDir/config/javadoc-aggregate.groovy"
-apply from: "$rootProject.projectDir/config/documentation-zip.groovy"
+
+apply from: "$gradleConfigUrl/java.gradle"
+apply from: "$gradleConfigUrl/create-dirs.gradle"
+apply from: "$gradleConfigUrl/groovy.gradle"
+apply from: "$gradleConfigUrl/eclipse.gradle"
+apply from: "$gradleConfigUrl/sonar.gradle"
+apply from: "$gradleConfigUrl/nexus.gradle"
+apply from: "$gradleConfigUrl/deppkg.gradle"
+apply from: "$gradleConfigUrl/defaultdeps.gradle"
+apply from: "$gradleConfigUrl/test.gradle"
+apply from: "$gradleConfigUrl/findbugs.gradle"
+apply from: "$gradleConfigUrl/jacoco.gradle"
+apply from: "$gradleConfigUrl/markdownconverter.gradle"
+apply from: "$gradleConfigUrl/javadoc-aggregate.gradle"
+apply from: "$gradleConfigUrl/documentation-zip.gradle"
 
 task wrapper(type: Wrapper) { gradleVersion = GRADLE_VERSION }
 
