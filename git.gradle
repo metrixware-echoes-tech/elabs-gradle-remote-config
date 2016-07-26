@@ -47,5 +47,6 @@ ext.getGitBranch = {
  * Version rule management.
  */
 //logger.info "version $version"
-ext.branch = getGitBranch()
-project.version = branch ? version : (version + '.' + branch)
+def gitBranch = getGitBranch()
+project.version = gitBranch ? version : (version + '.' + gitBranch)
+ext.branch = gitBranch
