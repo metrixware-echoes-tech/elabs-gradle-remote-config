@@ -6,6 +6,8 @@ This repo hosts a set of gradle build scripts to be used as remote plugins using
 
 The goal of this gradle configuration is to provide a set of build script that can be reused among projects with several modules. The scripts force a way of organizing a multi project repository that is common among the company, in order to facilitate grasping the code architecture. It also centralize the configuration in one file.
 
+Note that with the current configuration, the root project should not contain any code (though, markdown files in ```src/main/doc``` are processed).
+
 ## Configuration
 
 The file ```gradle.properties``` at the root of the project's hierarchy defines all the relevant information required to build the project.
