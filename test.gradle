@@ -31,8 +31,8 @@ subprojects {
 		maxHeapSize = "1024m"
 
 		// set JVM arguments for the test JVM(s)
-		if(JavaVersion.current() >= JavaVersion.VERSION_1_8){
-			// disabled for java 8+ and this option is disabled
+		// disabled for java 8+ and this option is disabled
+		if(JavaVersion.current() < JavaVersion.VERSION_1_8){
 			jvmArgs '-XX:MaxPermSize=256m'
 		}
 	}
