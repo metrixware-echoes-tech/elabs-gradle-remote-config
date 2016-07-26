@@ -9,11 +9,12 @@ ext {
 	documentationTitle = "$title Documentation"
 	projectDescription = "$description"
 	projectAuthor = "$author"
-	docCopyright = "$title v$version &#8208; &copy; $buildYear $author"
+	docCopyright = "$title v$version &#8208; &copy; $buildYear $projectAuthor"
 	docFooter = "$docCopyright &#8208; <a href=\"$website\">$website</a> &#8208; <a href=\"mailto:$contact\">$contact</a>"
 	docsSrcDir = "src/main/doc"
 	docsDir = file("$project.buildDir/docs")
 
+	// use by the markdown converter script to store the HTML template
 	htmlTemplateCacheDir = "$rootProject.rootDir/.htmlTemplateCache/"
 
 }

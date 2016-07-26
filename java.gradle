@@ -28,24 +28,23 @@ allprojects {
 		//enable incremental compilation => nope
 		//options.incremental = true
 	}
-	jar { manifest.attributes provider: author }
+	
+	jar { manifest.attributes provider: projectAuthor }
 
 	//disable fail on javadoc linter warnings on java 8+
 	tasks.withType(Javadoc) {
 		if(JavaVersion.current() >= JavaVersion.VERSION_1_8){
 			options.addStringOption('Xdoclint:none', '-quiet')
-		}
-		
+		}	
 	}
 
-	//disable incremental build : it's still an incubating feature !
+	//disable incremental build : it's still an incubating feature
 	//tasks.withType(JavaCompile) { options.incremental = true }
 
 	// note : javadoc aggregation (in root project) is configured in the javadoc-aggregate.groovy file
 	javadoc {
 		project.configure(options) {
 			encoding = "ISO-8859-1"
-			author = projectAuthor
 			footer = docFooter
 		}
 	}

@@ -27,10 +27,10 @@ allprojects {
 				'Build-Time': project.buildTime,
 				'Specification-Title': project.name,
 				'Specification-Version': project.version,
-				'Specification-Vendor': author,
+				'Specification-Vendor': projectAuthor,
 				'Implementation-Title': project.name,
 				'Implementation-Version': project.version,
-				'Implementation-Vendor': author
+				'Implementation-Vendor': projectAuthor
 			)
 		}
 	}

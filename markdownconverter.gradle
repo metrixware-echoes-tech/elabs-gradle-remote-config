@@ -1,17 +1,14 @@
 
 
+// specific git client dependency for fetching the template repository
 buildscript {
-  repositories {
-	jcenter()
-  }
-
-  dependencies {
-	classpath 'com.palominolabs.gradle.task:gradle-git-clone-task:0.0.2'
-  }
+	repositories { jcenter() }
+	dependencies { classpath 'com.palominolabs.gradle.task:gradle-git-clone-task:0.0.2' }
 }
 	
 allprojects {
 
+	// clone template repository if cache is not populated
 	task cloneHtmlTemplateGitRepo(type: com.palominolabs.gradle.task.git.clone.GitCloneTask) {
 	  dir = file(htmlTemplateCacheDir)
 	  uri = htmlTempalteGitRepoUri
@@ -24,7 +21,6 @@ allprojects {
 	apply plugin: 'org.kordamp.markdown.convert'
 
 	def markdownDocFolderPath = "$project.projectDir/$docsSrcDir"
-
 	def markdownDocFolder = new File(markdownDocFolderPath)
 	def htmlOutputDocFolder = file(docsDir)
 
@@ -32,6 +28,7 @@ allprojects {
 		markdownDocFolder.mkdirs()
 	}
 	
+	// configure task
 	markdownToHtml.sourceDir = markdownDocFolder
 	markdownToHtml.outputDir = htmlOutputDocFolder
 	markdownToHtml.configuration = [tables: true]
@@ -40,10 +37,10 @@ allprojects {
 	// use html templates from template cache (populated with git task above)
 	markdownToHtml.doLast {
 		copy {
-			from file(htmlTemplateCacheDir)
-			into docsDir
+			from "$htmlTemplateCacheDir/assets/"
+			into "$docsDir/assets"
 		}
-		def templateFile = new File(docsDir.path+"/template.html")
+		def templateFile = new File("$htmlTemplateCacheDir/template.html")
 		if (templateFile.exists()) {
 			def template = templateFile.getText("UTF-8")
 			FileTree tree = fileTree(dir: "$docsDir", include: '**/*.html', exclude: ['/javadoc', '/groovydoc', '/template.html'])
@@ -52,33 +49,32 @@ allprojects {
 				new File(docsDir.path+"/assets").deleteDir()
 			} else {
 				tree.each { File file ->
-					if (file.name.endsWith(".html") && !templateFile.name.equals(file.name)) {
-						logger.info "-- processing markdown documentation file "+file.name+"..."
-						def content = file.getText("UTF-8")
-						
-						// compute the relative path to the root directory
-						def relativePathToParent = file.getParentFile().toPath().relativize( docsDir.toPath() ).toFile().toString()
-						if (! relativePathToParent.isEmpty()) { relativePathToParent += "/" }
-						
-						def result = template
-							.replaceAll('#CONTENT') { content }
-							.replaceAll('#LANG') { lang }
-							.replaceAll('#TITLE') { documentationTitle }
-							.replaceAll('#AUTHOR') { projectAuthor }
-							.replaceAll('#DESCRIPTION') { projectDescription }
-							.replaceAll('#FOOTER') { docFooter }
-							.replaceAll('#RELATIVE_PATH') { relativePathToParent }
-						
-						file.write(result, 'UTF-8')
-					}
+					logger.info "-- processing markdown documentation file {}",docsDir.toPath().relativize( file.toPath() ).toFile().toString()
+					def content = file.getText("UTF-8")
+					
+					// compute the relative path to the root directory
+					def relativePathToParent = file.getParentFile().toPath().relativize( docsDir.toPath() ).toFile().toString()
+					if (! relativePathToParent.isEmpty()) { relativePathToParent += "/" }
+					
+					// insert proper content
+					def result = template
+						.replaceAll('#CONTENT') { content }
+						.replaceAll('#LANG') { lang }
+						.replaceAll('#TITLE') { documentationTitle }
+						.replaceAll('#AUTHOR') { projectAuthor }
+						.replaceAll('#DESCRIPTION') { projectDescription }
+						.replaceAll('#FOOTER') { docFooter }
+						.replaceAll('#RELATIVE_PATH') { relativePathToParent }
+					
+					// write result back
+					file.write(result, 'UTF-8')
 				}
 			}
-			//remove unecessary files copied from the html template repo
-			templateFile.delete()
-			new File(docsDir.path+"/README.md").delete()
-			new File(docsDir.path+"/LICENSE").delete()
+		} else {
+			println "-- Warning: template not found. Repository cache may be corrupted."
 		}
 	}
 	
+	// make sure the documentation is built when task build is called
 	build.dependsOn markdownToHtml
 }

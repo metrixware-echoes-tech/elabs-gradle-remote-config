@@ -11,7 +11,6 @@ task alljavadoc(type: Javadoc) {
 	// note : javadoc for sub projects is configured in the java.groovy file
 	project.configure(options) {
 		encoding = "ISO-8859-1"
-		author = projectAuthor
 		footer = docFooter
 	}
 	
