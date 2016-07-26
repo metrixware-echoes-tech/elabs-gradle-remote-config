@@ -47,26 +47,31 @@ allprojects {
 		if (templateFile.exists()) {
 			def template = templateFile.getText("UTF-8")
 			FileTree tree = fileTree(dir: "$docsDir", include: '**/*.html', exclude: ['/javadoc', '/groovydoc', '/template.html'])
-			tree.each { File file ->
-				if (file.name.endsWith(".html") && !templateFile.name.equals(file.name)) {
-					logger.info "-- processing markdown documentation file "+file.name+"..."
-					def content = file.getText("UTF-8")
-					
-					// compute the relative path to the root directory
-					def relativePathToParent = file.getParentFile().toPath().relativize( docsDir.toPath() ).toFile().toString()
-					if (! relativePathToParent.isEmpty()) { relativePathToParent += "/" }
-					
-					def result = template
-						.replaceAll('#CONTENT') { content }
-						.replaceAll('#LANG') { lang }
-						.replaceAll('#TITLE') { documentationTitle }
-						.replaceAll('#AUTHOR') { author }
-						.replaceAll('#DESCRIPTION') { description }
-						.replaceAll('#CONTACT') { contact }
-						.replaceAll('#COPYRIGHT') { copyright }
-						.replaceAll('#RELATIVE_PATH') { relativePathToParent }
-					
-					file.write(result, 'UTF-8')
+			if (tree.isEmpty()) {
+				// delete unused assets
+				new File(docsDir.path+"/assets").deleteDir()
+			} else {
+				tree.each { File file ->
+					if (file.name.endsWith(".html") && !templateFile.name.equals(file.name)) {
+						logger.info "-- processing markdown documentation file "+file.name+"..."
+						def content = file.getText("UTF-8")
+						
+						// compute the relative path to the root directory
+						def relativePathToParent = file.getParentFile().toPath().relativize( docsDir.toPath() ).toFile().toString()
+						if (! relativePathToParent.isEmpty()) { relativePathToParent += "/" }
+						
+						def result = template
+							.replaceAll('#CONTENT') { content }
+							.replaceAll('#LANG') { lang }
+							.replaceAll('#TITLE') { documentationTitle }
+							.replaceAll('#AUTHOR') { author }
+							.replaceAll('#DESCRIPTION') { description }
+							.replaceAll('#CONTACT') { contact }
+							.replaceAll('#COPYRIGHT') { copyright }
+							.replaceAll('#RELATIVE_PATH') { relativePathToParent }
+						
+						file.write(result, 'UTF-8')
+					}
 				}
 			}
 			//remove unecessary files copied from the html template repo
