@@ -1,6 +1,4 @@
 
-ext.GroovyLibrary = "org.codehaus.groovy:groovy-all:${GROOVY_VERSION}"
-
 subprojects {
 
 	apply plugin: 'groovy'

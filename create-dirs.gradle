@@ -1,13 +1,11 @@
 
-ext.documentationSourceDir = "src/main/doc"
-
 subprojects {
 
 	task "create-dirs" << {
 		sourceSets*.java.srcDirs*.each { it.mkdirs() }
 		sourceSets*.resources.srcDirs*.each { it.mkdirs() }
 
-		def markdownDocFolder = new File("$project.projectDir/$documentationSourceDir")
+		def markdownDocFolder = new File("$project.projectDir/$docsSrcDir")
 		if (! markdownDocFolder.exists()) {
 			markdownDocFolder.mkdirs()
 		}

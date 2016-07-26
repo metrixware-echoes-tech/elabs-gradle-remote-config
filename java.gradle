@@ -1,9 +1,4 @@
 
-
-ext.copyright = "$rootProject.name-$version &#8208; &copy; $buildYear $author"
-ext.footer = copyright
-ext.javaSourceCompatibility = 1.7
-ext.javaTargetCompatibility = 1.7
 allprojects {
 
 	apply plugin: "java"

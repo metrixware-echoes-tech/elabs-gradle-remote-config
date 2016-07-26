@@ -50,7 +50,10 @@ subprojects {
 
 		testCompile "com.jayway.jsonpath:json-path:$TEST_JAYWAY_JSONPATH"
 		testCompile "com.jayway.jsonpath:json-path-assert:$TEST_JAYWAY_JSONPATH"
-		compile 'org.codehaus.groovy:groovy-all:$GROOVY_VERSION'
+		
+		ext.GroovyLibrary = "org.codehaus.groovy:groovy-all:${GROOVY_VERSION}"
+		compile GroovyLibrary
+
 	}
 
 	if (project.hasProperty("depcheck")) {

@@ -7,8 +7,13 @@ ext {
 	buildTime = currentDate.format('HH:mm:ss.SSSZ')
 	
 	documentationTitle = "$title Documentation"
+	projectDescription = "$description"
+	copyright = "$rootProject.name-$version &#8208; &copy; $buildYear $author"
+	footer = "$copyright &#8208; <a href=\"$website\">$website</a> &#8208; <a href=\"mailto:$contact\">$contact</a>"
 	
-	descriptionKomea = 'Komea is a framework to collect, aggregate events from your software factory and build metrics and many other things ';
+	docsSrcDir = "src/main/doc"
+	docsDir = file("$project.buildDir/docs")
 
-	
+	htmlTemplateCacheDir = "$rootProject.rootDir/.htmlTemplateCache/"
+
 }

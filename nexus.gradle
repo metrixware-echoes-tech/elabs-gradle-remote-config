@@ -1,8 +1,4 @@
 
-ext.nexusSnapshotPath = "/nexus/content/groups/echoes-lab-snapshot"
-ext.nexusReleasePath  = "/nexus/content/groups/echoes-lab-release"
-ext.nexusUploadPath   = "/nexus/content/repositories/RAPID"
-
 ext.nexusURL = localNexusURL
 
 if (project.hasProperty('remote')) {

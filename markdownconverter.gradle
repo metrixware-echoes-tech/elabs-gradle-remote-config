@@ -1,13 +1,5 @@
 
 
-ext.htmlTemplateCacheDir = "$rootProject.rootDir/.htmlTemplateCache/"
-ext.htmlTempalteGitRepoUri = "https://github.com/echoes-tech/elabs-html-doc-template.git"
-
-ext.description = documentationTitle
-ext.copyright = "$rootProject.name-$version &#8208; &copy; $buildYear $author"
-ext.documentationSource = "src/main/doc"
-ext.docsDir = file("$project.buildDir/docs")
-
 buildscript {
   repositories {
 	jcenter()
@@ -31,7 +23,7 @@ allprojects {
 
 	apply plugin: 'org.kordamp.markdown.convert'
 
-	def markdownDocFolderPath = "$project.projectDir/$documentationSource"
+	def markdownDocFolderPath = "$project.projectDir/$docsSrcDir"
 
 	def markdownDocFolder = new File(markdownDocFolderPath)
 	def htmlOutputDocFolder = file(docsDir)

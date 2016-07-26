@@ -1,9 +1,5 @@
 
 
-ext.testMinHeapSize = "256m"
-ext.testMaxHeapSize = "1024m"
-ext.testMaxPermSize = "256m"
-
 subprojects {
 
 	task unitTest(type : Test) { exclude "**/**IT" }
