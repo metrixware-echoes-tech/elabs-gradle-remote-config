@@ -1,24 +1,14 @@
 subprojects {
 	/** DEPENDENCIES */
 	dependencies {
-
-		compile "org.slf4j:slf4j-api:$LOG_SLF4J"
-		runtime "org.slf4j:jcl-over-slf4j:$LOG_SLF4J"
-		runtime "org.slf4j:log4j-over-slf4j:$LOG_SLF4J"
-
-		compile "org.apache.commons:commons-lang3:$APACHE_COMMONLANG3"
-		compile "commons-io:commons-io:$APACHE_COMMONIO"
-
-		compile "com.google.code.findbugs:jsr305:$FINDBUGS"
-		compile "com.google.guava:guava:$GUAVA"
-
-		testCompile tests_frameworks // TEST FRAMEWORKS
+	
 		testRuntime "org.apache.logging.log4j:log4j-core:${LOG4J}"
-
-		testCompile("org.spockframework:spock-core:$TEST_SPOCK") { exclude group: 'junit' }
-		testCompile("org.spockframework:spock-spring:$TEST_SPOCK") { exclude group: 'junit' }
+		
+		testCompile "ch.qos.logback:logback-classic:$LOG_LOGBACK"
+		
+		testCompile tests_frameworks // TEST FRAMEWORKS
+		
 		testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
-
 		testCompile "org.springframework.security:spring-security-test:$SPRING_SECU"
 
 		testCompile "com.jayway.jsonpath:json-path:$TEST_JAYWAY_JSONPATH"
@@ -26,45 +16,22 @@ subprojects {
 
 		testCompile "com.lordofthejars:nosqlunit-mongodb:$TEST_NOSQLUNIT"
 
-		testCompile "ch.qos.logback:logback-classic:$LOG_LOGBACK"
-
-		testCompile tests_frameworks // TEST FRAMEWORKS
-
 		testCompile("org.easymock:easymock:${TEST_EASYMOCK}") { exclude group: 'org.objenesis' }
-		testRuntime "org.apache.logging.log4j:log4j-core:${LOG4J}"
 
 		testCompile("org.spockframework:spock-core:$TEST_SPOCK") {
 			exclude group: 'junit'
-			exclude group: 'org.codehaus.groovy'
+			//exclude group: 'org.codehaus.groovy'
 		}
 
 		testCompile("org.spockframework:spock-spring:$TEST_SPOCK") {
 			exclude group: 'junit'
-			exclude group: 'org.codehaus.groovy'
-
+			//exclude group: 'org.codehaus.groovy'
 		}
-
-		testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
-
-		testCompile "org.springframework.security:spring-security-test:$SPRING_SECU"
-
-		testCompile "com.jayway.jsonpath:json-path:$TEST_JAYWAY_JSONPATH"
-		testCompile "com.jayway.jsonpath:json-path-assert:$TEST_JAYWAY_JSONPATH"
-		
-		ext.GroovyLibrary = "org.codehaus.groovy:groovy-all:${GROOVY_VERSION}"
-		compile GroovyLibrary
-
 	}
-
+	
 	if (project.hasProperty("depcheck")) {
 		configurations.all {
 			resolutionStrategy { failOnVersionConflict() }
-		}
-	}
-
-	configurations.all {
-		resolutionStrategy {
-			force "org.codehaus.groovy:groovy-all:$GROOVY_VERSION" 
 		}
 	}
 }

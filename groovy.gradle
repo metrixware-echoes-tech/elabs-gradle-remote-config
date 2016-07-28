@@ -1,6 +1,12 @@
 
 subprojects {
 
+
+	ext.GroovyLibrary = "org.codehaus.groovy:groovy-all:${GROOVY_VERSION}"
+	dependencies {
+		compile GroovyLibrary
+	}
+
 	apply plugin: 'groovy'
 	
     sourceSets.main.groovy {
