@@ -6,17 +6,25 @@ buildscript {
 	dependencies { classpath 'com.palominolabs.gradle.task:gradle-git-clone-task:0.0.2' }
 }
 	
+// clone template repository if cache is not populated
+task cloneHtmlTemplateGitRepo(type: com.palominolabs.gradle.task.git.clone.GitCloneTask) {
+  dir = file(htmlTemplateCacheDir)
+  uri = htmlTempalteGitRepoUri
+  treeish = 'origin/master'
+}
+cloneHtmlTemplateGitRepo.doFirst {
+	logger.info "-- cloning html template repo."
+}
+cloneHtmlTemplateGitRepo.onlyIf {
+	! new File(htmlTemplateCacheDir).exists()
+}
+cloneHtmlTemplateGitRepo.doLast {
+	logger.info "-- delete git repo data (.git) from template cache."
+	new File(htmlTemplateCacheDir+"/.git/").deleteDir()
+}
 allprojects {
 
-	// clone template repository if cache is not populated
-	task cloneHtmlTemplateGitRepo(type: com.palominolabs.gradle.task.git.clone.GitCloneTask) {
-	  dir = file(htmlTemplateCacheDir)
-	  uri = htmlTempalteGitRepoUri
-	  treeish = 'origin/master'
-	}
-	if (! new File(htmlTemplateCacheDir).exists()) {
-		markdownToHtml.dependsOn cloneHtmlTemplateGitRepo
-	}
+	markdownToHtml.dependsOn cloneHtmlTemplateGitRepo
 
 	apply plugin: 'org.kordamp.markdown.convert'
 
