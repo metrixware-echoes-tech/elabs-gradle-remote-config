@@ -41,7 +41,7 @@ allprojects {
 	//disable incremental build : it's still an incubating feature
 	//tasks.withType(JavaCompile) { options.incremental = true }
 
-	// note : javadoc aggregation (in root project) is configured in the javadoc-aggregate.groovy file
+	// note : javadoc aggregation (in root project) is configured in the javadoc-aggregate.gradle file
 	javadoc {
 		project.configure(options) {
 			encoding = "ISO-8859-1"
