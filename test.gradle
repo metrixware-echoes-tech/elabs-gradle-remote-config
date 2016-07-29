@@ -55,4 +55,4 @@ gradle.allprojects {
 	}
 }
 
-println "-- INFO: fail on tests = ${!test.ignoreFailures}"
+println "-- INFO : fail on tests = ${!test.ignoreFailures}"
