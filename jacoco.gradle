@@ -36,8 +36,4 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
 	doFirst {
 		executionData = files(executionData.findAll { it.exists() })
 	}
-
-	tasks.withType(Test) {
-		ignoreFailures=project.hasProperty("ignoreTestFailures")
-	}
 }

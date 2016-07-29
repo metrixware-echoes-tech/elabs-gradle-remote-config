@@ -37,13 +37,6 @@ subprojects {
 			jvmArgs "-XX:MaxPermSize="+testMaxPermSize
 		}
 	}
-
-	tasks.withType(Test) {
-		ignoreFailures = project.hasProperty("ignoreTestFailures");
-		testLogging {
-			events "passed", "skipped", "failed"
-		}
-	}
     
 	configurations.all {
 		resolutionStrategy {
@@ -52,3 +45,14 @@ subprojects {
 		}
 	}
 }
+
+gradle.allprojects {
+	tasks.withType(Test) {
+		ignoreFailures = project.hasProperty("ignoreTestFailures")
+		testLogging {
+			events "passed", "skipped", "failed"
+		}
+	}
+}
+
+println "-- fail on tests = ${!test.ignoreFailures}"
