@@ -2,7 +2,5 @@ subprojects {
 
 	apply plugin: "eclipse"
 
-	configurations { provided }
-
 }
 

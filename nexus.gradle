@@ -9,7 +9,11 @@ if (project.hasProperty('remote')) {
 }
 
 gradle.allprojects {
+	
+	apply plugin: "maven"
+	apply plugin: 'maven-publish'
 
+	
 	ext.isRelease = (! (project.version.endsWith('-SNAPSHOT')))
 
 	/** REPOSITORIES */

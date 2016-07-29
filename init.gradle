@@ -1,4 +1,13 @@
 
+
+println "-- "
+println "-- Building version '$version'"
+println "-- with " + GradleVersion.current().toString()
+println "-- on Java Virtual Machine " + org.gradle.internal.jvm.Jvm.current()
+println "--"
+println "-- HINT : To print unit tests logs uses -PlogTest"
+println "-- HINT : To compile outside Echoes/Lab building, use -Premote"
+
 gradle.allprojects {
 	if (project.hasProperty("myVersion")) {
 		version = project.getProperty("myVersion");
@@ -28,3 +37,11 @@ ext {
 	htmlTemplateCacheDir = "$rootProject.rootDir/.htmlTemplateCache/"
 
 }
+
+println "-- "
+println "-- Building version '$version'"
+println "-- with " + GradleVersion.current().toString()
+println "-- on Java Virtual Machine " + org.gradle.internal.jvm.Jvm.current()
+println "--"
+println "-- HINT : To print unit tests logs uses -PlogTest"
+println "-- HINT : To compile outside Echoes/Lab building, use -Premote"

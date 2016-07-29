@@ -4,33 +4,15 @@ plugins {
   id "org.kordamp.markdown.convert" version "1.1.0"
 }
 
-println ""
-println "-----------------------------------------------------------------------------------"
-println "-- $title Gradle Build Script"
-println "-----------------------------------------------------------------------------------"
-
 apply from: "$gradleConfigUrl/git.gradle" 	// populates $branch
 
-println "-- "
-println "-- Building version '$version'"
-println "-- with " + GradleVersion.current().toString()
-println "-- on Java Virtual Machine " + org.gradle.internal.jvm.Jvm.current()
-println "--"
-println "-- HINT : To print unit tests logs uses -PlogTest"
-println "-- HINT : To compile outside company building, use -Premote"
-
-allprojects {
-	apply plugin: "maven"
-	apply plugin: "idea"
-	apply plugin: "project-report"
-	apply plugin: 'maven-publish'
-}
-
 apply from: "$gradleConfigUrl/init.gradle"	// initialize global variables
+apply from: "$gradleConfigUrl/project-reports.gradle"
 apply from: "$gradleConfigUrl/java.gradle"
 apply from: "$gradleConfigUrl/create-dirs.gradle"
 apply from: "$gradleConfigUrl/groovy.gradle"
 apply from: "$gradleConfigUrl/eclipse.gradle"
+apply from: "$gradleConfigUrl/idea.gradle"
 apply from: "$gradleConfigUrl/sonar.gradle"
 apply from: "$gradleConfigUrl/nexus.gradle"
 apply from: "$gradleConfigUrl/deppkg.gradle"
