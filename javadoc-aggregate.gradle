@@ -8,7 +8,7 @@ subprojects.each {subproject ->
 // define a task for aggregating the javadoc of all subprojects in the root project javadoc
 task alljavadoc(type: Javadoc) {
 	
-	// note : javadoc for sub projects is configured in the java.groovy file
+	// note : javadoc for sub projects is configured in the java.gradle file
 	project.configure(options) {
 		encoding = "ISO-8859-1"
 		footer = docFooter
