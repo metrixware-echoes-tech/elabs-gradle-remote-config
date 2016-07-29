@@ -27,6 +27,7 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
 	executionData = files(subprojects.jacocoTestReport.executionData)
 	reports {
 		html.enabled = true
+		html.destination "${buildDir}/reports/jacoco"
 		xml.enabled = true
 		csv.enabled = false
 		xml.destination = "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"

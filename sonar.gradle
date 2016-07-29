@@ -4,6 +4,20 @@ apply plugin: 'org.sonarqube'
 sonarqube {
   properties {
 		property "sonar.host.url", sonarURL
+
+/*
+		property "sonar.sourceEncoding", "UTF-8"
+		//property "sonar.jdbc.url", ""
+		//property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+		//property "sonar.projectKey", ""
+		property "sonar.projectName", "$title"
+		property "sonar.projectVersion", "$version"
+		//property "sonar.skippedModules", ""
+		//property "sonar.branch", "$branch" //deprecated
+		property "sonar.jacoco.reportMissing.force.zero", "true"
+		//property "sonar.jacoco.reportPath", "$rootDir/build/jacoco/jacocoTest.exec"
+		//property "sonar.groovy.jacoco.reportPath", "$rootDir/build/jacoco/jacocoTest.exec"
+ */
 	}
 }
 

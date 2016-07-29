@@ -43,6 +43,8 @@ gradle.allprojects {
 	}
 
 	/** UPLOAD ARCHIVES */
+	
+	uploadArchives.dependsOn ":build"
 	uploadArchives {
 		def publishURL = nexusURL + nexusUploadPath
 		if (!isRelease) {
@@ -54,6 +56,9 @@ gradle.allprojects {
 				repository(url: publishURL) {
 					authentication(userName: mavenUser, password: mavenPassword)
 				}
+				//snapshotRepository(url: nexusURL+"/content/repositories/snapshots") {
+				//	authentication(userName: mavenUser, password: mavenPassword)
+				//}
 			}
 		}
 	}

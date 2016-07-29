@@ -1,4 +1,14 @@
 
+gradle.allprojects {
+	if (project.hasProperty("myVersion")) {
+		version = project.getProperty("myVersion");
+	}
+	if (version.startsWith("origin/")) {
+		version = version.substring(7);
+	}
+	version = version.replace("/","_");
+}
+
 ext {
 	
 	currentDate = new Date()
