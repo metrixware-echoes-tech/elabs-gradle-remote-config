@@ -5,6 +5,7 @@ sonarqube {
   properties {
 		property "sonar.host.url", sonarURL
 		property "sonar.projectName", "$title"
+		property "sonar.projectKey", "${key}"
 		
 /*
 		property "sonar.sourceEncoding", "UTF-8"
