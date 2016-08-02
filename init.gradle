@@ -55,6 +55,7 @@ ext {
 	PRETTY_TIME		= "4.0.0.Final"
 	JODA_TIME		= "2.9"
 	JAVAMAIL		= "1.5.5"
+	JAVA_VALIDATION		= "1.1.0.Final"
 	JFIGLET_VERSION		= "0.0.7"
 	RESTEASY		= "3.0.13.Final"
 	ZIP4J			= "1.3.2"
