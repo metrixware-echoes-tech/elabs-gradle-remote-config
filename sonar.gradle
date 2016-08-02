@@ -4,13 +4,13 @@ apply plugin: 'org.sonarqube'
 sonarqube {
   properties {
 		property "sonar.host.url", sonarURL
-
+		property "sonar.projectName", "$title"
+		
 /*
 		property "sonar.sourceEncoding", "UTF-8"
 		//property "sonar.jdbc.url", ""
 		//property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
 		//property "sonar.projectKey", ""
-		property "sonar.projectName", "$title"
 		property "sonar.projectVersion", "$version"
 		//property "sonar.skippedModules", ""
 		//property "sonar.branch", "$branch" //deprecated

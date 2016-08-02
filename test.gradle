@@ -37,20 +37,18 @@ subprojects {
 			jvmArgs "-XX:MaxPermSize="+testMaxPermSize
 		}
 	}
-    
+    tasks.withType(Test) {
+		ignoreFailures = project.hasProperty("ignoreTestFailures")
+		if (project.hasProperty("logTest")) {
+			testLogging {
+				events "passed", "skipped", "failed"
+			}
+		}
+	}
 	configurations.all {
 		resolutionStrategy {
 			//force    'org.objenesis:objenesis:$TEST_OBJENESIS'
 			force "junit:junit:${TEST_JUNIT}"
-		}
-	}
-}
-
-gradle.allprojects {
-	tasks.withType(Test) {
-		ignoreFailures = project.hasProperty("ignoreTestFailures")
-		testLogging {
-			events "passed", "skipped", "failed"
 		}
 	}
 }
