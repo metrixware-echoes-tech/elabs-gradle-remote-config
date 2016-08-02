@@ -5,6 +5,10 @@ println "-----------------------------------------------------------------------
 println "-- $title Gradle Build Script"
 println "-----------------------------------------------------------------------------------"
 
+/****************************
+ ** Version handling
+ ****************************/
+	 
 gradle.allprojects {
 	if (project.hasProperty("myVersion")) {
 		version = project.getProperty("myVersion");
@@ -17,11 +21,19 @@ gradle.allprojects {
 
 ext {
 	
+	/****************************
+	 ** Date
+	 ****************************/
+	 
 	currentDate = new Date()
 	buildYear = currentDate.format('yyyy')
 	buildDate = currentDate.format('yyyy-MM-dd')
 	buildTime = currentDate.format('HH:mm:ss.SSSZ')
 	
+	/****************************
+	 ** Global project data
+	 ****************************/
+	 
 	documentationTitle = "$title Documentation"
 	projectDescription = "$description"
 	projectAuthor = "$author"
@@ -32,6 +44,89 @@ ext {
 
 	// use by the markdown converter script to store the HTML template
 	htmlTemplateCacheDir = "$rootProject.rootDir/.htmlTemplateCache/"
+	
+	/****************************
+	 ** Dependency versions
+	 ****************************/
+	
+	// -- MISC---------------
+	GUAVA			= "19.0"
+	GUICE			= "4.0"
+	PRETTY_TIME		= "4.0.0.Final"
+	JODA_TIME		= "2.9"
+	JAVAMAIL		= "1.5.5"
+	JFIGLET_VERSION	= "0.0.7"
+	RESTEASY		= "3.0.13.Final"
+	ZIP4J			= "1.3.2"
+	FINDBUGS		= "3.0.1"
+	DIFFLIB			= "1.4.1"
+	PLUGIN_FWK		= "0.4.2"
+
+	// -- SPRING---------------
+	springBootVersion		= "1.3.5.RELEASE"
+	SPRING_VERSION			= "4.2.6.RELEASE"
+	SPRING_LDAP				= "4.1.0.RELEASE"
+	SPRING_SECU				= "4.0.4.RELEASE"
+	SPRING_SECU_CAS			= "4.0.4.RELEASE"
+	SPRING_SHELL_VERSION	= "1.1.0.RELEASE"
+	SPRING_MONGO			= "1.9.2.RELEASE"
+	SPRING_ELASTICSEARCH	= "2.0.2.RELEASE"
+
+	// -- GRADLE -------------------
+	GRADLE_VERSION	= "2.14.1"
+
+	// -- GROOVY -------------------
+	GROOVY_VERSION	= "2.4.5"
+
+	// -- WEB/JEE/JSR---------------
+	LDAP_SERVER		= "1.5.5"
+	JACKSON			= "2.7.2"
+	SERVLET_API		= "3.0.1"
+	JAVAEE_API		= "6.0"
+	JSR250			= "1.0"
+
+	// -- DATABASE---------------
+	FONGO			= "2.0.7"
+	MONGO_DRIVER	= "3.2.2"
+
+	// -- JAVERS ----------------
+	JAVERS	= "2.0.2"
+
+	// -- Apache---------------
+	APACHE_COMMONIO		= "2.4"
+	APACHE_COMMONLANG3	= "3.4"
+	APACHE_COMMONVALID	= "1.4.1"
+	APACHE_COMMONLOG	= "1.1.3"
+	APACHE_COMMONLANG	= "2.6"
+
+	// -- TEST---------------
+	testMinHeapSize		= "256m"
+	testMaxHeapSize		= "1024m"
+	testMaxPermSize		= "256m"
+
+	TEST_JACOCO				= "0.7.7.201606060606"
+	TEST_JUNIT				= "4.12"
+	TEST_EASYMOCK			= "3.4"
+	TEST_MOCKITO			= "1.10.19"
+	TEST_POWERMOCK			= "1.6.4"
+	TEST_XMLUNIT			= "1.6"
+	TEST_HAMCREST			= "1.3"
+	TEST_CGLIB				= "3.2.0"
+	TEST_OBJENESIS			= "2.2"
+	TEST_BENCH				= "0.7.2"
+	TEST_BENCH4J			= "0.1.1"
+	TEST_SPOCK				= "1.0-groovy-2.4"
+	TEST_JAYWAY_JSONPATH	= "2.0.0"
+	TEST_NOSQLUNIT			= "0.8.1"
+	TEST_SELENIUM			= "2.49.0"
+	TEST_PHANTOMJS			= "1.9.8"
+	TEST_PHANTOMJS_DRIVER	= "1.2.1"
+	TEST_PHANBEDDER			= "1.0.0"
+
+	// -- Loggin---------------
+	LOG_LOGBACK		= "1.1.7"
+	LOG_SLF4J		= "1.7.20"
+	LOG4J			= "2.6.1"
 
 }
 
