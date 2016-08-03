@@ -1,5 +1,5 @@
-// Use the key as root project name instead of folder name. This
-// is mainly due to the fact that jenkins clones the git repo in 
-// a folder named ${JENKINS_HOME}/sharedspace@${EXECUTOR_NUMBER}/
-// which has nothing to do with the project name
+// Use the key (defined in gradle.properties) as root project name instead of folder 
+// name. This is mainly due to the fact that jenkins clones the git repo in  a folder 
+// named ${JENKINS_HOME}/sharedspace@${EXECUTOR_NUMBER}/ which has nothing to do with 
+// the project name...
 rootProject.name = key
