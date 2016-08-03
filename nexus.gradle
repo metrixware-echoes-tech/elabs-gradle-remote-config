@@ -20,7 +20,7 @@ gradle.allprojects {
 	repositories {
 
 		mavenLocal()
-		if (project.hasProperty('remote')) {
+		if (project.hasProperty('central')) {
 			mavenCentral()
 			jcenter()
 		}
