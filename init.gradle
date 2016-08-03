@@ -61,6 +61,7 @@ ext {
 	FINDBUGS		= "3.0.1"
 	DIFFLIB			= "1.4.1"
 	PLUGIN_FWK		= "0.4.4"
+	VELOCITY		= "1.5"
 
 	// -- SPRING---------------
 	springBootVersion	= "1.3.5.RELEASE"
