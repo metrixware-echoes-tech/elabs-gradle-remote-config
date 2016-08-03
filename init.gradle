@@ -5,10 +5,11 @@ println "-----------------------------------------------------------------------
 println "-- $title Gradle Build Script"
 println "-----------------------------------------------------------------------------------"
 
+project.name = key
+
 /****************************
  ** Version handling
  ****************************/
-	 
 gradle.allprojects {
 	if (project.hasProperty("myVersion")) {
 		version = project.getProperty("myVersion");
