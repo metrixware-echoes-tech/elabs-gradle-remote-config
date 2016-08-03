@@ -66,6 +66,7 @@ ext {
 	DIFFLIB			= "1.4.1"
 	VELOCITY		= "1.5"
 	JAXEN 			= "1.1.6"
+	JGRAPHT			= "0.9.1"
 	JDOM			= "2.0.2"
 
 	// -- SPRING---------------
