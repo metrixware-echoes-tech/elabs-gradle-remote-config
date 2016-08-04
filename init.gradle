@@ -138,8 +138,10 @@ println "--"
 class CustomEventLogger extends BuildAdapter implements TaskExecutionListener {
 
 	private final String title;
-	CustomEventLogger(final String _title) {
+	private final String version;
+	CustomEventLogger(final String _title, final String _version) {
 		this.title = _title
+		this.version = _version
 	}
 	
     public void beforeExecute(Task task) {
