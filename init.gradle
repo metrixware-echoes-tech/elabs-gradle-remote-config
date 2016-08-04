@@ -167,7 +167,7 @@ class CustomEventLogger extends BuildAdapter implements TaskExecutionListener {
         
 		println "--" 
 		println "-----------------------------------------------------------------------------------"
-		println "-- $title : Build $msg"
+		println "-- $title version $version : Build $msg"
 		println "-----------------------------------------------------------------------------------"
 		println ""
     }
