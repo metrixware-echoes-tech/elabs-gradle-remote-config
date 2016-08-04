@@ -174,5 +174,5 @@ class CustomEventLogger extends BuildAdapter implements TaskExecutionListener {
 		println ""
     }
 }
-gradle.useLogger(new CustomEventLogger(title))
+gradle.useLogger(new CustomEventLogger(title, version))
 
