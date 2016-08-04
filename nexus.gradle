@@ -1,4 +1,5 @@
 
+
 ext.nexusURL = localNexusURL
 
 if (project.hasProperty('remote')) {
@@ -67,3 +68,7 @@ gradle.allprojects {
 		}
 	}
 }
+
+
+    println "-- INFO : Using repos : "
+    repositories.forEach { it -> println "--   * " + it.name + " : " + it.url }
