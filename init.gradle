@@ -147,3 +147,43 @@ println "-- HINT : To compile outside company building : -Premote"
 println "-- HINT : To overload the version             : -PmyVersion=xxx"
 println "-- HINT : To ignore test failures             : -PignoreTestFailures"
 println "--"
+
+class CustomEventLogger extends BuildAdapter implements TaskExecutionListener {
+
+	private final String title;
+	CustomEventLogger(final String _title) {
+		this.title = _title
+	}
+	
+    public void beforeExecute(Task task) {
+		def projectName = task.project.path
+		if (! projectName.endsWith(":"))
+			projectName += ":"
+        print "-- " + projectName + task.name + " "
+    }
+
+    public void afterExecute(Task task, TaskState state) {
+		def msg = state.getSkipMessage()
+		if (msg != null)
+			println "- " + msg
+		else
+			println()
+    }
+    
+    public void buildFinished(BuildResult result) {
+    
+		def msg = "completed"
+        if (result.failure != null) {
+            result.failure.printStackTrace()
+            msg = "terminated with failure"
+        }
+        
+		println "--" 
+		println "-----------------------------------------------------------------------------------"
+		println "-- $title : Build $msg"
+		println "-----------------------------------------------------------------------------------"
+		println ""
+    }
+}
+gradle.useLogger(new CustomEventLogger(title))
+
