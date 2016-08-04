@@ -4,7 +4,7 @@ plugins {
   id "org.kordamp.markdown.convert" version "1.1.0"
 }
 
-apply from: "$gradleConfigUrl/git.gradle" 	// populates $branch
+apply from: "$gradleConfigUrl/version.gradle"
 
 apply from: "$gradleConfigUrl/init.gradle"	// initialize global variables
 apply from: "$gradleConfigUrl/project-reports.gradle"
