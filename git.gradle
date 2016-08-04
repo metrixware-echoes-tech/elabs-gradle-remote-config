@@ -18,7 +18,7 @@ ext.getGitBranch = {
 					'HEAD'
 				]
 				standardOutput = stdout
-				standardError = null
+				errorOutput = new ByteArrayOutputStream()
 			}
 			def currentBranch = stdout.toString().trim()
 			if (currentBranch.contains("release/")) {
@@ -30,7 +30,7 @@ ext.getGitBranch = {
 				logger.info "-- Found branch '$rBranch'."
 			}
 		} catch(Exception e) {
-			logger.info "-- Project is not in a git repository. Using 'local'."
+			logger.info "-- Project is not in a git repository. Using 'local' (" + e.getMessage() + ")"
 			return "local"
 		}
 	}
