@@ -37,7 +37,7 @@ ext {
 	
 	// -- Echoes-Labs
 	PLUGIN_FWK		= "0.4.4"
-	RAPID_FWK		= "1.99.99"
+	RAPID_FWK		= "1.99.100"
 	
 	// -- MISC---------------
 	GUAVA			= "19.0"
