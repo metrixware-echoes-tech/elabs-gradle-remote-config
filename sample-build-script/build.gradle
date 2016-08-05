@@ -25,6 +25,7 @@ apply from: "$gradleConfigUrl/javadoc-aggregate.gradle"
 apply from: "$gradleConfigUrl/groovydoc-aggregate.gradle"
 apply from: "$gradleConfigUrl/markdownconverter.gradle"
 apply from: "$gradleConfigUrl/documentation-zip.gradle"
+apply from: "$gradleConfigUrl/eclipse-plugin.gradle"
 
 task wrapper(type: Wrapper) { gradleVersion = GRADLE_VERSION }
 
