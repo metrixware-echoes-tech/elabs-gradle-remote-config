@@ -2,6 +2,7 @@
 plugins {
   id "org.sonarqube" version "2.0.1"
   id "org.kordamp.markdown.convert" version "1.1.0"
+  id "org.akhikhl.wuff" version "0.0.14"
 }
 
 apply from: "$gradleConfigUrl/version.gradle"
