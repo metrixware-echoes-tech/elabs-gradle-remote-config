@@ -140,17 +140,23 @@ class CustomEventLogger extends BuildAdapter implements TaskExecutionListener {
 	def title;
 	def version;
 	def project;
+	def startClock;
 	CustomEventLogger(def _title, def _version, def _project) {
 		this.title = _title
 		this.version = _version
 		this.project = _project
+		this.startClock = project.gradle.services.get(org.gradle.initialization.BuildRequestMetaData.class).buildTimeClock
+		
 	}
 	
     public void beforeExecute(Task task) {
 		def projectName = task.project.path
 		if (! projectName.endsWith(":"))
 			projectName += ":"
-        print "-- " + projectName + task.name + " "
+		def s = (startClock.getTimeInMs() / 1000).toLong()
+		def ms = (startClock.getTimeInMs() % 1000).toLong()
+		
+        print "-- " + sprintf('[% 6d.%04d]', s, ms) + " " + projectName + task.name + " "
     }
 
     public void afterExecute(Task task, TaskState state) {
@@ -168,7 +174,6 @@ class CustomEventLogger extends BuildAdapter implements TaskExecutionListener {
             result.failure.printStackTrace()
             msg = "terminated with failure"
         }
-        Clock startClock = project.gradle.services.get(org.gradle.initialization.BuildRequestMetaData.class).buildTimeClock
 
 		println "--" 
 		println "-----------------------------------------------------------------------------------"
