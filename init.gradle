@@ -137,11 +137,13 @@ println "--"
 
 class CustomEventLogger extends BuildAdapter implements TaskExecutionListener {
 
-	private final String title;
-	private final String version;
-	CustomEventLogger(final String _title, final String _version) {
+	def title;
+	def version;
+	def project;
+	CustomEventLogger(def _title, def _version, def _project) {
 		this.title = _title
 		this.version = _version
+		this.project = _project
 	}
 	
     public void beforeExecute(Task task) {
@@ -166,13 +168,15 @@ class CustomEventLogger extends BuildAdapter implements TaskExecutionListener {
             result.failure.printStackTrace()
             msg = "terminated with failure"
         }
-        
+        Clock startClock = project.gradle.services.get(org.gradle.initialization.BuildRequestMetaData.class).buildTimeClock
+
 		println "--" 
 		println "-----------------------------------------------------------------------------------"
-		println "-- $title version $version : Build $msg"
+		println "-- $title version $version"
+		println "-- Build $msg after ${startClock.getTime()}"
 		println "-----------------------------------------------------------------------------------"
 		println ""
     }
 }
-gradle.useLogger(new CustomEventLogger(title, version))
+gradle.useLogger(new CustomEventLogger(title, version, rootProject))
 
