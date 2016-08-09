@@ -98,7 +98,7 @@ ext {
 	testMaxHeapSize		= "1024m"
 	testMaxPermSize		= "256m"
 
-	TEST_JACOCO		= "0.7.7.201606060606"
+	TEST_JACOCO		= "0.7.4.201502262128"
 	TEST_JUNIT		= "4.12"
 	TEST_EASYMOCK		= "3.4"
 	TEST_MOCKITO		= "1.10.19"
