@@ -107,6 +107,6 @@ ext.slf4j_library = [
 	"org.slf4j:log4j-over-slf4j:${LOG_SLF4J}",
 	"org.slf4j:osgi-over-slf4j:${LOG_SLF4J}"
 ];
-
+ext.commoncli_library = "commons-cli:commons-cli:1.3.1"
 
 
