@@ -119,7 +119,7 @@ ext {
 
 	// -- Loggin---------------
 	LOG_LOGBACK		= "1.1.7"
-	LOG_SLF4J		= "1.7.20"
+	LOG_SLF4J		= "1.7.21"
 	LOG4J			= "2.6.1"
 
 }
