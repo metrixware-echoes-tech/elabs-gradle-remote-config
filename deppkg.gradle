@@ -13,5 +13,16 @@ subprojects {
 		//"com.tocea.frameworks:bench4j-core:${TEST_BENCH4J}",
 		//"com.tocea.frameworks:bench4j-htmlreport:${TEST_BENCH4J}"
 	]
+	ext.logback_library = "ch.qos.logback:logback-classic:${LOG_LOGBACK}";
+	ext.slf4j_library = [
+		"org.slf4j:slf4j-api:${LOG_SLF4J}",
+		"org.slf4j:jcl-over-slf4j:${LOG_SLF4J}",
+		"org.slf4j:log4j-over-slf4j:${LOG_SLF4J}",
+		"org.slf4j:osgi-over-slf4j:${LOG_SLF4J}"
+	];
+	
+	
 
+		
+	
 }
