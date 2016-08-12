@@ -1,4 +1,6 @@
-subprojects {
+allprojects {
+	// Define Bundle of dependencies.
+	
 	//TEST FRAMEWORKS DEPENDENCIES
 
 	ext.tests_frameworks = [
