@@ -8,6 +8,7 @@ plugins {
 apply from: "$gradleConfigUrl/version.gradle"
 
 apply from: "$gradleConfigUrl/init.gradle"	// initialize global variables
+apply from: "$gradleConfigUrl/deppkg.gradle"
 apply from: "$gradleConfigUrl/project-reports.gradle"
 apply from: "$gradleConfigUrl/java.gradle"
 apply from: "$gradleConfigUrl/create-dirs.gradle"
@@ -16,7 +17,6 @@ apply from: "$gradleConfigUrl/eclipse.gradle"
 apply from: "$gradleConfigUrl/idea.gradle"
 apply from: "$gradleConfigUrl/sonar.gradle"
 apply from: "$gradleConfigUrl/nexus.gradle"
-apply from: "$gradleConfigUrl/deppkg.gradle"
 apply from: "$gradleConfigUrl/defaultdeps.gradle"
 apply from: "$gradleConfigUrl/test.gradle"
 apply from: "$gradleConfigUrl/findbugs.gradle"
