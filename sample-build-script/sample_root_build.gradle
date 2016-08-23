@@ -1,0 +1,51 @@
+// print a header
+println "$HEADER"
+
+// apply to all projects
+allprojects {
+	// ...
+    apply plugin: "java"
+    apply plugin: "jacoco"
+	// specify dependency repositories
+    repositories { mavenLocal() /* ... */ }
+
+	// configure java version
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+
+	// add dependencies
+    dependencies {
+        compile( "commons-io:commons-io:2.4", /* ... * / )
+		testCompile (
+            project (":komea-tests:test-commons"),
+            "junit:junit:${JUNIT_VERSION}" /* ... */ )
+    }
+    
+    // add test options
+    test {
+        maxHeapSize = '2048m'
+        jvmArgs "-XX:MaxPermSize=256m"
+    }
+ 
+	// specify where to upload result artifects
+    uploadArchives {
+        repositories {
+            mavenDeployer { repository(url: nexusURL) { /* ... */ } }
+        }
+    }
+	// add dependency between tasks
+    uploadArchives.dependsOn ":build"
+	
+}
+
+// apply to root project only
+apply plugin: "org.sonarqube"
+sonarqube { properties { /* ... */ } }
+
+// apply to subprojects only
+subprojects {
+	// ...
+}
+
+// add other tasks
+// ...
