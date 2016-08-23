@@ -1,0 +1,398 @@
+plugins {
+	id "org.sonarqube" version "2.0.1"
+}
+/**
+ * Package of dependencies
+ */
+println "---------------------------------------------------------------------------------------"
+println "How to use Komea build script :                                                        "
+println "HINT : To print unit tests logs uses -PlogTest"
+println "HINT : To compile outside Echoes/Lab building, use -Premote"
+println "HINT : To upload to bintray , set the properties         -Dbintray_net_user= -Dbintray_net_key="
+println "---------------------------------------------------------------------------------------"
+
+//TEST FRAMEWORKS DEPENDENCIES
+ext.JUNIT= "junit:junit:${TEST_JUNIT}"
+ext.LOGGING = "ch.qos.logback:logback-classic:$LOG_LOGBACK"
+ext.tests_frameworks = [
+	JUNIT,
+	"org.mockito:mockito-core:${TEST_MOCKITO}",
+	"cglib:cglib-nodep:${TEST_CGLIB}",
+	"org.hamcrest:hamcrest-core:${TEST_HAMCREST}",
+	"org.objenesis:objenesis:${TEST_OBJENESIS}"
+]
+ext.GroovyLibrary = "org.codehaus.groovy:groovy-all:${GROOVY_VERSION}"
+
+ext.GIT = "git"
+ext.nexusURL = "http://XXX";
+if (project.hasProperty("remote")) {
+ext.nexusURL = "http://YYY";
+}
+
+allprojects {
+	println "version $version"
+	//version = getGitBranch().isEmpty() ? version : (version + '.' + getGitBranch())
+	ext.branch = getGitBranch();
+}
+//ext.nexusURL =
+
+def getGitBranch()  {
+	def String rBranch;
+	if (project.hasProperty("branch")) {
+		def branches = project.getProperty("branch").split('/');
+		def branch =branches[branches.length-1];;
+		logger.info("Using parameter branch $branch");
+		rBranch = branch;
+	} else {
+		def gitExe = GIT
+		try {
+			def stdout = new ByteArrayOutputStream()
+			exec {
+				executable = GIT
+				args = [
+					'rev-parse',
+					'--abbrev-ref',
+					'HEAD'
+				]
+				standardOutput = stdout
+			}
+			def currentBranch = stdout.toString().trim()
+			if (currentBranch.contains("release/")) {
+				rBranch = "candidate";
+			} else {
+				def lastPath = currentBranch.split('/')
+				rBranch = lastPath[lastPath.length-1]
+			}
+		} catch(Exception e) {
+			e.printStackTrace()
+			return "local"
+		}
+	}
+	if (rBranch.contains("release/")) {
+		return "candidate";
+	}
+	if (rBranch.contains("master")) {
+		return "";
+	}
+
+	println("Branch $rBranch");
+	return rBranch;
+}
+/*if (!"master".equals(getGitBranch())) {
+	ext.version="$version-" + getGitBranch()
+}*/
+
+logger.info "\n\n\nFramework Version $version\n"
+
+/**
+ Specific parent plugin
+ */
+
+apply plugin: 'org.sonarqube'
+
+sonarqube {
+  properties {
+		property "sonar.host.url", "http://XXX"
+		property "sonar.projectName", "RAPID - Eclipse UI"
+		property "sonar.projectKey", "rapid-eclipse-ui"
+		property "sonar.sourceEncoding", "windows-1252"
+		//property "sonar.sourceEncoding", "UTF-8"
+		
+/*
+		//property "sonar.jdbc.url", ""
+		//property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+		//property "sonar.projectKey", ""
+		property "sonar.projectVersion", "$version"
+		//property "sonar.skippedModules", ""
+		//property "sonar.branch", "$branch" //deprecated
+		property "sonar.jacoco.reportMissing.force.zero", "true"
+		//property "sonar.jacoco.reportPath", "$rootDir/build/jacoco/jacocoTest.exec"
+		//property "sonar.groovy.jacoco.reportPath", "$rootDir/build/jacoco/jacocoTest.exec"
+ */
+	}
+}
+
+// add sonarRunner rule back for jenkins multibranch project compatibility
+task "sonarRunner" << {
+	println "-- WARNING: calling deprecated goal 'sonarRunner'. Please use 'sonarqube' instead."
+}
+sonarRunner.dependsOn 'sonarqube'
+
+subprojects {
+
+
+	apply plugin: "java"
+	apply plugin: "maven"
+	apply plugin: "eclipse"
+	apply plugin: "idea"
+	apply plugin: "project-report"
+	apply plugin: 'jacoco'
+	apply plugin: 'findbugs'
+	apply plugin: 'maven-publish'
+	apply plugin: 'groovy'
+
+
+
+	/** REPOSITORIES */
+	repositories {
+
+		mavenLocal()
+		mavenCentral()
+		jcenter()
+
+		maven {
+			credentials {
+				username mavenUser
+				password mavenPassword
+			}
+			// Release EchoesLabs (remote)
+			url nexusURL + "/nexus/content/groups/release"
+
+		}
+		maven {
+			credentials {
+				username mavenUser
+				password mavenPassword
+			}
+			// Release EchoesLabs (local)
+			url nexusURL + "/nexus/content/groups/release"
+
+		}
+
+
+	}
+
+
+	/** JAVA COMPILATION */
+	sourceCompatibility = 1.7
+	targetCompatibility = sourceCompatibility
+	compileJava {
+		//enable compilation in a separate daemon process
+		options.fork = true
+		//enable incremental compilation
+		options.incremental = true
+	}
+
+
+	jar { manifest.attributes provider: 'TOTO' }
+
+
+
+	/** CONFIGURATIONS */
+	configurations { provided }
+
+	sourceSets {
+		main {
+			compileClasspath += configurations.provided
+			runtimeClasspath += configurations.provided
+		}
+
+
+		test {
+			compileClasspath += configurations.provided
+			runtimeClasspath += configurations.provided
+		}
+
+	}
+	eclipse.classpath.plusConfigurations += configurations.provided
+
+	if (project.hasProperty("depcheck")) {
+		configurations.all {
+
+			resolutionStrategy { failOnVersionConflict() }
+		}
+	}
+
+	configurations.all {
+		resolutionStrategy { //        force    'org.objenesis:objenesis:1.3'
+			force JUNIT }
+	}
+
+
+	/** DEPENDENCIES */
+
+
+
+	dependencies {
+
+		compile "org.slf4j:slf4j-api:$LOG_SLF4J"
+		runtime "org.slf4j:jcl-over-slf4j:$LOG_SLF4J"
+		runtime "org.slf4j:log4j-over-slf4j:$LOG_SLF4J"
+
+		compile "org.apache.commons:commons-lang3:$APACHE_COMMONLANG3"
+		compile "commons-io:commons-io:$APACHE_COMMONIO"
+
+		compile "com.google.code.findbugs:jsr305:$FINDBUGS"
+		compile "com.google.guava:guava:$GUAVA"
+
+
+		testCompile LOGGING
+
+		testCompile tests_frameworks // TEST FRAMEWORKS
+
+		testCompile("org.easymock:easymock:${TEST_EASYMOCK}") { exclude group: 'org.objenesis' }
+		testRuntime "org.apache.logging.log4j:log4j-core:${LOG4J}"
+
+		testCompile("org.spockframework:spock-core:$TEST_SPOCK") { exclude group: 'junit' }
+		testCompile("org.spockframework:spock-spring:$TEST_SPOCK") { exclude group: 'junit' }
+		testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+
+		testCompile "org.springframework.security:spring-security-test:$SPRING_SECU"
+
+		testCompile "com.jayway.jsonpath:json-path:$TEST_JAYWAY_JSONPATH"
+		testCompile "com.jayway.jsonpath:json-path-assert:$TEST_JAYWAY_JSONPATH"
+
+	}
+
+
+	task unitTest(type : Test) { exclude "**/**IT" }
+
+
+	/**
+	 TESTS
+	 */
+
+	jacoco { toolVersion = '0.7.1.201405082137' }
+
+	test {
+		if (project.hasProperty("logTest")) {
+			// listen to events in the test execution lifecycle
+			beforeTest { descriptor ->
+				logger.lifecycle("Running test: " + descriptor)
+
+			}
+			// listen to standard out and standard error of the test JVM(s)
+			onOutput { descriptor, event ->
+				logger.lifecycle("Test: " + descriptor + " : " + event.message )
+			}
+			// show standard out and standard error of the test JVM(s) on the console
+			testLogging.showStandardStreams = true
+
+		}
+
+
+		// set heap size for the test JVM(s)
+		minHeapSize = "128m"
+		maxHeapSize = "512m"
+
+		// set JVM arguments for the test JVM(s)
+		jvmArgs '-XX:MaxPermSize=256m'
+
+
+		tasks.withType(Test) {
+			//ignore test failures if commandline has -PignoreTestFailures
+			ignoreFailures=project.hasProperty("ignoreTestFailures")
+
+			//always ignore test failures
+			//ignoreFailures = true
+		}
+	}
+
+	task print <<  { println "$rootProject.buildDir.path" }
+
+	task "create-dirs" << {
+		sourceSets*.java.srcDirs*.each { it.mkdirs() }
+		sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+	}
+
+
+
+
+	tasks.withType(JavaCompile) { options.incremental = true }
+
+	/** FINDBUGS -------------------------------------------------------------- */
+
+	// Marker Task to enable findbugs.
+	task findbugs(
+			group: "Verification",
+			description: """Marker task to enabled findbugs. Findbugs is by default
+                        disabled. E.g. ( ./gradlew findbugs build )"""
+			)
+
+
+
+
+
+	gradle.taskGraph.whenReady { taskGraph ->
+		tasks.findbugsMain.onlyIf { taskGraph.hasTask((tasks.findbugs)) }
+		tasks.findbugsTest.onlyIf { taskGraph.hasTask((tasks.findbugs)) }
+	}
+
+	findbugs {
+		ignoreFailures = true
+		effort = "max"
+
+	}
+
+	tasks. withType(FindBugs) {
+		reports { xml.enabled=true }
+	}
+
+
+	tasks.withType(Javadoc) {
+		//source = sourceSets.main.allJava
+		//classpath = configurations.compile
+		failOnError = false
+		//exclude '**/resources/**'
+		//destinationDir = reporting.file("someplace")
+	}
+
+	uploadArchives {
+		repositories {
+			mavenDeployer {
+				repository(url: "$nexusURL/nexus/content/repositories/APP/")
+				{
+					authentication(userName: mavenUser, password: mavenPassword)
+				}
+				//                snapshotRepository(url: "$nexusURL/nexus/content/repositories/APP/")
+				//				{
+				//					authentication(userName: mavenUser, password: mavenPassword)
+				//				}
+			}
+		}
+	}
+}
+
+
+
+subprojects {
+
+	jacocoTestReport {
+		reports {
+			html.enabled = true
+			xml.enabled = true
+			csv.enabled = false
+		}
+	}
+}
+
+task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
+	dependsOn = subprojects.test
+	sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
+	classDirectories = files(subprojects.sourceSets.main.output)
+	executionData = files(subprojects.jacocoTestReport.executionData)
+	reports {
+		html.enabled = true
+		xml.enabled = true
+		csv.enabled = false
+		xml.destination = "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+	}
+	onlyIf = { true }
+	doFirst {
+		executionData = files(executionData.findAll { it.exists() })
+	}
+
+
+}
+
+/**
+ Documentation
+ : http://stackoverflow.com/questions/9547170/in-gradle-how-do-i-declare-common-dependencies-in-a-single-place
+ : http://gradle.codehaus.org/Cookbook
+ : http://stackoverflow.com/questions/8343871/mark-gradle-build-unstable-in-jenkins-when-junit-tests-fail
+ */
+
+
+task wrapper(type: Wrapper) { gradleVersion = GRADLE_VERSION }
+
+
