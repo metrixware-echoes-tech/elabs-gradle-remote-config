@@ -1,4 +1,4 @@
-subprojects {
+gradle.allprojects {
 
 	apply plugin: "eclipse"
 
