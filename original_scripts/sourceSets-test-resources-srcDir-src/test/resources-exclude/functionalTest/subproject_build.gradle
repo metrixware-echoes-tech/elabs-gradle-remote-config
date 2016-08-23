@@ -1,0 +1,38 @@
+
+sourceSets {
+    test {
+        resources {
+            srcDir 'src/test/resources'
+            exclude '**/functionalTest/**'
+       }
+   }
+}
+
+repositories {
+	mavenCentral()
+	flatDir { dirs 'libs' }
+}
+
+dependencies {
+	compile GroovyLibrary
+
+	compile "org.jgrapht:jgrapht-ext:0.9.1"
+	compile "org.jgrapht:jgrapht-core:0.9.1"
+
+	compile 'org.apache.velocity:velocity:1.5'
+
+	compile "com.fasterxml.jackson.core:jackson-core:$JACKSON"
+	compile "com.fasterxml.jackson.core:jackson-databind:$JACKSON"
+	compile "com.fasterxml.jackson.core:jackson-annotations:$JACKSON"
+
+	compile project(":api:migration-api-sourceadapters")
+	compile project(":api:migration-api-refactoring")
+	compile project(":migration-registry")
+	compile project(":extensions:xml-jaxb-source")
+
+	testCompile project(":plain:migration-plain-workspace")
+	testCompile project(":plain:migration-plain-refactoring")
+
+	compile project(":extensions:jdt-eclipse")
+	compile project(":extensions:jsdt-eclipse")
+}
