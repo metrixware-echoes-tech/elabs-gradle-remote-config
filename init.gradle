@@ -31,6 +31,13 @@ ext {
 	// use by the markdown converter script to store the HTML template
 	htmlTemplateCacheDir = "$rootProject.rootDir/.htmlTemplateCache/"
 	
+	if (project.hasProperty('sourceEncoding')) {
+		logger.info("-- Using predefined encoding '${sourceEncoding}'")
+	} else {
+		sourceEncoding = "UTF-8"
+		logger.info("-- Using default encoding '${sourceEncoding}'")
+	}
+	
 	/****************************
 	 ** Dependency versions
 	 ****************************/
@@ -50,6 +57,7 @@ println "-- HINT : To compile outside company building : -Premote"
 println "-- HINT : To overload the version             : -PmyVersion=xxx"
 println "-- HINT : To ignore test failures             : -PignoreTestFailures"
 println "--"
+println "-- INFO : Source encoding : ${sourceEncoding}"
 
 class CustomEventLogger extends BuildAdapter implements TaskExecutionListener {
 
