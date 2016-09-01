@@ -1,31 +1,27 @@
 
+
 plugins {
   id "org.sonarqube" version "2.0.1"
   id "org.kordamp.markdown.convert" version "1.1.0"
-  id "org.akhikhl.wuff" version "0.0.14"
+  id "com.kageiit.url-cache" version "1.0.0"
 }
+apply plugin: 'com.kageiit.url-cache'
 
-apply from: "$gradleConfigUrl/version.gradle"
+def taskList = [
+	"version", "init", "deppkg", "project-reports",
+	"java",	"create-dirs", "defaultdeps", "javadoc-aggregate",
+	"groovy", "groovydoc-aggregate",
+	"eclipse", "idea",
+	"sonar", "nexus",
+	"test",	"findbugs",	"jacoco",
+	"markdownconverter", "documentation-zip",
+]
 
-apply from: "$gradleConfigUrl/init.gradle"	// initialize global variables
-apply from: "$gradleConfigUrl/deppkg.gradle"
-apply from: "$gradleConfigUrl/project-reports.gradle"
-apply from: "$gradleConfigUrl/java.gradle"
-apply from: "$gradleConfigUrl/create-dirs.gradle"
-apply from: "$gradleConfigUrl/groovy.gradle"
-apply from: "$gradleConfigUrl/eclipse.gradle"
-apply from: "$gradleConfigUrl/idea.gradle"
-apply from: "$gradleConfigUrl/sonar.gradle"
-apply from: "$gradleConfigUrl/nexus.gradle"
-apply from: "$gradleConfigUrl/defaultdeps.gradle"
-apply from: "$gradleConfigUrl/test.gradle"
-apply from: "$gradleConfigUrl/findbugs.gradle"
-apply from: "$gradleConfigUrl/jacoco.gradle"
-apply from: "$gradleConfigUrl/javadoc-aggregate.gradle"
-apply from: "$gradleConfigUrl/groovydoc-aggregate.gradle"
-apply from: "$gradleConfigUrl/markdownconverter.gradle"
-apply from: "$gradleConfigUrl/documentation-zip.gradle"
-apply from: "$gradleConfigUrl/eclipse-plugin.gradle"
+for (currentTask in taskList) {
+	def taskUrl = "${gradleConfigUrl}/${currentTask}.gradle"
+	logger.info "-- apply from ${taskUrl}"
+	apply from: taskUrl.startsWith("http") ? urlCache.get(taskUrl) : taskUrl
+}
 
 task wrapper(type: Wrapper) { gradleVersion = GRADLE_VERSION }
 
