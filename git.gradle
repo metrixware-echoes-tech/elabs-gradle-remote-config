@@ -1,3 +1,11 @@
+/**
+ *
+ * This file is deprecated and subject to deletion. 
+ * Please use version.gradle instead.
+ *
+ **/
+
+
 ext.GIT = "git"
 
 ext.getGitBranch = {
