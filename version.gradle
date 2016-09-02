@@ -22,7 +22,7 @@ ext.getGitBranch = {
 			}
 			def currentBranch = stdout.toString().trim()
 			if (currentBranch.contains("release/")) {
-				logger.info "-- Branch contains 'release'. Using 'candidate'".
+				logger.info "-- Branch contains 'release'. Using 'candidate'."
 				rBranch = "candidate"
 			} else {
 				def lastPath = currentBranch.split('/')
@@ -35,7 +35,7 @@ ext.getGitBranch = {
 		}
 	}
 	if (rBranch.contains("release/")) {
-		logger.info "-- Branch contains 'release'. Using 'RC'".
+		logger.info "-- Branch contains 'release'. Using 'RC'."
 		return "RC"
 	}
 	if (rBranch.contains("master")) {
