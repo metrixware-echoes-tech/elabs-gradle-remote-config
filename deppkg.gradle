@@ -21,6 +21,7 @@ ext {
 	JDOM			= "2.0.2"
 	EHCACHE			= "2.10.2"
 	TROVE4J			= "3.0.3"
+	XSTREAM			= "1.4.9"
 
 	// -- SPRING---------------
 	springBootVersion	= "1.3.5.RELEASE"
