@@ -19,6 +19,7 @@ ext {
 	JAXEN 			= "1.1.6"
 	JGRAPHT			= "0.9.2"
 	JDOM			= "2.0.2"
+	EHCACHE			= "2.10.2"
 
 	// -- SPRING---------------
 	springBootVersion	= "1.3.5.RELEASE"
