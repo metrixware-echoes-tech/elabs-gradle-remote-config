@@ -119,4 +119,5 @@ ext.jgrapht_library = [
 	"org.jgrapht:jgrapht-core:${JGRAPHT}",
 	"org.jgrapht:jgrapht-ext:${JGRAPHT}"
 ];
+ext.guava_library = "com.google.guava:guava$GUAVA";
 
