@@ -120,4 +120,10 @@ ext.jgrapht_library = [
 	"org.jgrapht:jgrapht-ext:${JGRAPHT}"
 ];
 ext.guava_library = "com.google.guava:guava:$GUAVA";
+ext.jackson_library = [
+	"com.fasterxml.jackson.core:jackson-core:${JACKSON}",
+	"com.fasterxml.jackson.core:jackson-annotations:${JACKSON}",
+	"com.fasterxml.jackson.core:jackson-databind:${JACKSON}"	
+];
+
 
