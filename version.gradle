@@ -1,6 +1,6 @@
 ext.GIT = "git"
 
-for (prop in System.env) 
+for (prop in System.env) {
 	logger.info prop.key + " = " + prop.value
 }
 
