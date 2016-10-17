@@ -10,7 +10,7 @@ ext.getGitBranch = {
 		def branch =branches[branches.length-1]
 		logger.info("-- Using parameter branch '$branch'")
 		rBranch = branch
-	} else if (System.properties.branch != null) {
+	} else if (System.properties.GIT_BRANCH != null) {
 		// check if a system property defines a branch name
 		logger.info("-- has system proerty branch : " + System.properties.branch)
 		rBranch = System.properties.branch
