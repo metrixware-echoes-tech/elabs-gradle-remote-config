@@ -1,9 +1,16 @@
 ext.GIT = "git"
 
+for (prop in System.env) 
+	logger.info prop.key + " = " + prop.value
+}
+
+
 ext.getGitBranch = {
         // contains the final branch name returned by this function
         def String rBranch
-
+        
+		logger.ingo "-- Determining git branch ..."
+		
         if (project.hasProperty("branch")) {
                 // check if user specified branch manually suing -Pbranch=<branch>
                 def branches = project.getProperty("branch").split('/')
