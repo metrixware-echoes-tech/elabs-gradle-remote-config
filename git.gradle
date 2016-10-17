@@ -5,54 +5,69 @@
  *
  **/
 
-
 ext.GIT = "git"
 
 ext.getGitBranch = {
-	def String rBranch
-	if (project.hasProperty("branch")) {
-		def branches = project.getProperty("branch").split('/')
-		def branch =branches[branches.length-1]
-		logger.info("-- Using parameter branch '$branch'")
-		rBranch = branch
-	} else {
-		try {
-			def stdout = new ByteArrayOutputStream()
-			exec {
-				executable = GIT
-				args = [
-					'rev-parse',
-					'--abbrev-ref',
-					'HEAD'
-				]
-				standardOutput = stdout
-				errorOutput = new ByteArrayOutputStream()
-			}
-			def currentBranch = stdout.toString().trim()
-			if (currentBranch.contains("release/")) {
-				logger.info "-- Branch contains 'release'. Using 'candidate'."
-				rBranch = "candidate"
-			} else {
-				def lastPath = currentBranch.split('/')
-				rBranch = lastPath[lastPath.length-1]
-				logger.info "-- Found branch '$rBranch' from 'git rev-parse --abbrev-ref HEAD'."
-			}
-		} catch(Exception e) {
-			logger.info "-- Project is not in a git repository. Using 'local' (" + e.getMessage() + ")"
-			return "local"
-		}
-	}
-	if (rBranch.contains("release/")) {
-		logger.info "-- Branch contains 'release'. Using 'RC'."
-		return "RC"
-	}
-	if (rBranch.contains("master")) {
-		logger.info "-- Branch contains 'master'. No branch name is used."
-		return ""
-	}
-	
-	return rBranch
+        // contains the final branch name returned by this function
+        def String rBranch
+
+        if (project.hasProperty("branch")) {
+                // check if user specified branch manually suing -Pbranch=<branch>
+                def branches = project.getProperty("branch").split('/')
+                def branch = branches[branches.length-1]
+                logger.info("-- Using parameter branch '$branch' (from command line -Pbranch=)")
+                rBranch = branch
+        } else if (System.env."GIT_BRANCH" != null) {
+                // check if a system property defines a branch name
+                def branches = System.env."GIT_BRANCH".split('/')
+                def branch = branches[branches.length-1]
+                logger.info("-- Using environment branch '$branch' (from System.env.\"GIT_BRANCH\")")
+                rBranch = branch
+        } else {
+                // try to determine using git repo data
+                logger.info("-- no branch property defined, trying to lookup branch name from git repo")
+                try {
+                        def stdout = new ByteArrayOutputStream()
+                        exec {
+                                executable = GIT
+                                args = [
+                                        'rev-parse',
+                                        '--abbrev-ref',
+                                        'HEAD'
+                                ]
+                                standardOutput = stdout
+                                errorOutput = new ByteArrayOutputStream()
+                        }
+                        def currentBranch = stdout.toString().trim()
+                        if (currentBranch.contains("release/")) {
+                                logger.info "-- Branch contains 'release'. Using 'candidate'."
+                                rBranch = "candidate"
+                        } else {
+                                def lastPath = currentBranch.split('/')
+                                rBranch = lastPath[lastPath.length-1]
+                                logger.info "-- Found branch '$rBranch' from 'git rev-parse --abbrev-ref HEAD'."
+                        }
+                } catch(Exception e) {
+                        logger.info "-- Project is not in a git repository. Using 'local' (" + e.getMessage() + ")"
+                        rBranch = "local"
+                }
+        }
+
+        // override : if branch contains "release/", replace by RC
+        if (rBranch.contains("release/")) {
+                logger.info "-- Branch contains 'release'. Using 'RC'."
+                rBranch = "RC"
+        }
+
+        // override : if branch contains "master", use empty branch name
+        if (rBranch.contains("master")) {
+                logger.info "-- Branch contains 'master'. No branch name is used."
+                rBranch = ""
+        }
+
+        return rBranch
 }
+
 /**
  * Version rule management.
  */
