@@ -1,9 +1,22 @@
-ext.GIT = "git"
 
+//available properties (for debug purpose)
+
+logger.info "project.properties (properties from command line and gradle.properties):\n========================================================================"
+for (prop in project.properties) {
+	logger.info prop.key + " = " + prop.value
+}
+
+logger.info "System.properties (from java VM properties):\n============================================"
+for (prop in System.properties) {
+	logger.info prop.key + " = " + prop.value
+}
+
+logger.info "System.env (system environment variables):\n=========================================="
 for (prop in System.env) {
 	logger.info prop.key + " = " + prop.value
 }
 
+ext.GIT = "git"
 
 ext.getGitBranch = {
         // contains the final branch name returned by this function
